@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>Solid App</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #root {
+      margin-top: 10rem;
+      width: 80%;
+      min-width: 600px;
+    }
+
+    #root-d {
+      margin-top: 10rem;
+      width: 80%;
+      min-width: 600px;
+    }
+  </style>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <div id="root-d"></div>
+
+  <script type="module">
+    import App from '/src/main.tsx'
+
+    import { getComments, getReplys, postComment } from '/test/testCases.ts'
+
+    const root = document.querySelector('#root')
+
+    const rootd = document.querySelector('#root-d')
+
+    if (rootd) {
+      const maind = App(rootd)
+      maind.init({
+        editorOpt: {
+          placeHolder: '这是第二个评论区',
+          maxLength: 10,
+          onPost: (value, toComment, toUserID) => {
+            return new Promise((resolve) => {
+              resolve(postComment(value, toComment?.id, toUserID))
+            })
+          },
+        },
+        userOpt: {
+          onLogin() {
+            maind.setUser({ id: 2, nickname: 'test2', role: 1 })
+          },
+        },
+      })
+    }
+
+    if (root) {
+      const main = App(root)
+
+      main.init({
+        userOpt: {
+          onLogin() {
+            main.setUser({ id: 1, nickname: 'gmero', role: 1 })
+          },
+        },
+      })
+
+      main.loading.start()
+
+      setTimeout(() => {
+        getComments(1)
+          .then((res) => {
+            main.setData(res.data)
+            main.config({
+              editorOpt: {
+                placeHolder: '友善评论哦',
+                maxLength: 200,
+                onPost: (value, toComment, toUserID) => {
+                  return new Promise((resolve) => {
+                    resolve(postComment(value, toComment?.id, toUserID))
+                  })
+                },
+              },
+              commentsOpt: {
+                pageCount: Math.ceil(res.total / 8),
+                onPagiClick: (pn, commentID) => {
+                  if (commentID) {
+                    return new Promise((resolve) => {
+                      resolve(getReplys(pn, commentID).data)
+                    })
+                  } else {
+                    return getComments(pn).then((res) => {
+                      return res.data
+                    })
+                  }
+                },
+              },
+            })
+          })
+          .finally(() => {
+            main.loading.close()
+          })
+      }, 1000)
+    }
+  </script>
+</body>
+
+</html>

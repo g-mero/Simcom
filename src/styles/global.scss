@@ -1,0 +1,31 @@
+.simcom-wrapper {
+  /* 文本编辑的一些 */
+  --scom-color-border: #c7c7c7;
+  --scom-color-bg: #fafafa;
+
+  /* 文本相关 */
+  --scom-color-text: #575757;
+  --scom-color-text-heavy: #000;
+  --scom-color-text-light: #7a7a7a;
+
+  /* hover active 的颜色 */
+  --scom-color-hover: #12bfd6;
+  --scom-color-hover2: #08b9ff;
+  --scom-color-loadmask: rgb(255 255 255 / 70%);
+  --scom-border: 1px solid var(--scom-color-border);
+
+  color: var(--scom-color-text);
+
+  .loading {
+    opacity: 0.8;
+    filter: blur(1px);
+  }
+}
+
+.color-light {
+  color: var(--scom-color-text-light);
+}
+
+.simcom-texteditor {
+  margin-bottom: 2rem;
+}

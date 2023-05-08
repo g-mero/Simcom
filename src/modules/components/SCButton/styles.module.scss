@@ -1,0 +1,59 @@
+.btn {
+  &.default {
+    --scom-btn-color-txt: inherit;
+    --scom-btn-color-bg: inherit;
+    --scom-btn-color-bg-hover: #0000002c;
+    --scom-btn-border-color: #0000002c;
+  }
+
+  &.primary {
+    --scom-btn-color-txt: #fff;
+    --scom-btn-color-bg: #409eff;
+    --scom-btn-color-bg-hover: #79bbff;
+    --scom-btn-border-color: #79bbff;
+  }
+
+  &.success {
+    --scom-btn-color-txt: #fff;
+    --scom-btn-color-bg: #67c23a;
+    --scom-btn-color-bg-hover: #95d475;
+    --scom-btn-border-color: #95d475;
+  }
+
+  &.text {
+    background: none !important;
+    padding: 0 !important;
+    transition: 0.25s;
+
+    &:hover,
+    &.active {
+      color: var(--scom-color-hover);
+    }
+  }
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.1s;
+  user-select: none;
+  font-size: 1em;
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  line-height: 1;
+  outline: none;
+  border: 1px solid var(--scom-btn-border-color);
+  color: var(--scom-btn-color-txt);
+  background-color: var(--scom-btn-color-bg);
+
+  &:hover,
+  &.disabled {
+    background-color: var(--scom-btn-color-bg-hover);
+  }
+
+  &.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+}

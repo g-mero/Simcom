@@ -1,0 +1,33 @@
+.pagination {
+  display: flex;
+
+  .pagi-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem;
+    cursor: pointer;
+    user-select: none;
+
+    &.disabled {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    &.active {
+      cursor: default;
+      pointer-events: none;
+      color: var(--scom-color-hover2);
+    }
+
+    &:hover {
+      color: var(--scom-color-hover2);
+    }
+  }
+
+  &.center {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+}
