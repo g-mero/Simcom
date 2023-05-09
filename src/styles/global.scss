@@ -20,12 +20,20 @@
     opacity: 0.8;
     filter: blur(1px);
   }
-}
 
-.color-light {
-  color: var(--scom-color-text-light);
-}
+  .color-light {
+    color: var(--scom-color-text-light);
+  }
 
-.simcom-texteditor {
-  margin-bottom: 2rem;
+  .color-text {
+    color: var(--scom-color-text);
+  }
+
+  .color-heavy {
+    color: var(--scom-color-text-heavy);
+  }
+
+  .simcom-texteditor {
+    margin-bottom: 2rem;
+  }
 }
