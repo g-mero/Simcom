@@ -13,7 +13,6 @@ export default function TextEditor() {
     <div class={styles['text-editor-wrapper']}>
       <div class={styles['scom-textarea']}>
         <textarea
-          class="color-text"
           placeholder={GlobalConfig.editorOpt.placeHolder}
           maxLength={GlobalConfig.editorOpt.maxLength}
           onInput={(ev) => {
