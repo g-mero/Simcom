@@ -6,10 +6,10 @@ import TextEditor from './modules/textEditor/TextEditor'
 
 import './styles/global.scss'
 
-const App = (props: { loading?: boolean; theme?: string }) => {
+const App = (props: { loading?: boolean }) => {
   const { state: GlobalConfig } = useContext(CommentContext)
   return (
-    <div class={`simcom-wrapper ${props.theme}`}>
+    <div class={`simcom-wrapper`}>
       <div class="simcom-texteditor">
         <TextEditor />
       </div>

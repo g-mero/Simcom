@@ -13,8 +13,9 @@
 .scom-textarea {
   position: relative;
   border: var(--scom-border);
-  border-radius: 4px;
+  border-radius: .5em;
   background-color: var(--scom-color-bg);
+  overflow: hidden;
 
   textarea {
     color: var(--scom-color-text);

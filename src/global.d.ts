@@ -57,7 +57,6 @@ interface SimComInst {
     start: () => void
     close: () => void
   }
-  setTheme: (str: string) => void
   init: (opt: Partial<TypeConfig>) => void
   setData: (data?: TypeComment[]) => void
   setUser: (user?: TypeUser) => void

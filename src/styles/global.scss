@@ -16,14 +16,6 @@
 
   color: var(--scom-color-text);
 
-  &.dark {
-    --scom-color-border: #353535;
-    --scom-color-bg: #000;
-    --scom-color-text: #bebebe;
-    --scom-color-text-heavy: #fff;
-    --scom-color-text-light: #ececec;
-  }
-
   .loading {
     opacity: 0.8;
     filter: blur(1px);
