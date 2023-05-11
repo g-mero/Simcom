@@ -12,6 +12,7 @@ export default function SimCom(el: HTMLDivElement) {
 
 function createInst(el: HTMLDivElement) {
   const [loading, setLoad] = createSignal(false)
+  const [theme, setTheme] = createSignal('')
 
   const [ConfigStore, setConfig] = createStore(getDefaultConfig())
   const setComments = (setFunc: (prev: TypeComment[]) => TypeComment[]) => {
@@ -79,7 +80,7 @@ function createInst(el: HTMLDivElement) {
     render(
       () => (
         <CommentContext.Provider value={{ state: ConfigStore, setComments }}>
-          <App loading={loading()} />
+          <App loading={loading()} theme={theme()} />
         </CommentContext.Provider>
       ),
       el,
@@ -96,6 +97,9 @@ function createInst(el: HTMLDivElement) {
       },
     },
     init,
+    setTheme: (str: string) => {
+      setTheme(str)
+    },
     setUser(user) {
       if (user) {
         const newUser = Object.assign(
