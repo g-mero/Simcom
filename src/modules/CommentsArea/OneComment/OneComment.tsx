@@ -87,11 +87,15 @@ export default function OneComment(props: PropsOneComment) {
         />
         <Show when={replys().length > 0}>
           <div class={styles['comment-child']}>
+            {/*  这里通过动态更新replys实现的对回复区域的动态更新 */}
             <RenderReplys
               replys={replys()}
               total={props.comment.replys}
               onPagiClick={(pn: number) => {
-                return props.onPagiClick(pn, props.comment.id)
+                return props.onPagiClick(pn, props.comment.id).then((res) => {
+                  setReplys(res)
+                  return res
+                })
               }}
               onPost={(value, toUserID) => {
                 GlobalConfig.editorOpt
@@ -121,11 +125,6 @@ function RenderReplys(props: {
   )
   const [currentPage, setCurPage] = createSignal(0)
   const [pageCount, setPageCount] = createSignal(0)
-  const [replys, setReplys] = createSignal<TypeComment[]>([])
-
-  createEffect(() => {
-    setReplys(props.replys)
-  })
 
   createEffect(() => {
     const tmpFunc = (pn: number) => {
@@ -138,19 +137,19 @@ function RenderReplys(props: {
             setPageCount(Math.ceil(props.total / res.length))
           }
 
-          setReplys(res)
-
           if (!showall()) {
             setShowall(true)
           }
         }
       })
     }
+
+    // 设置页码点击的触发函数
     setOnPagiClick(() => tmpFunc)
   })
   return (
     <>
-      <For each={replys()}>
+      <For each={props.replys}>
         {(item) => {
           return (
             <OneReply
@@ -162,7 +161,7 @@ function RenderReplys(props: {
           )
         }}
       </For>
-      <Show when={props.total > replys().length && !showall()}>
+      <Show when={props.total > props.replys.length && !showall()}>
         <div class={styles['light-text']}>
           <span>共有{props.total}条评论，</span>
           <span
