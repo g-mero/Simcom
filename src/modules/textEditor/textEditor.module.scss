@@ -13,7 +13,7 @@
 .scom-textarea {
   position: relative;
   border: var(--scom-border);
-  border-radius: .5em;
+  border-radius: 0.5em;
   background-color: var(--scom-color-bg);
   overflow: hidden;
 
@@ -23,7 +23,7 @@
     box-sizing: border-box;
     padding: 0.8rem 1rem;
     width: 100%;
-    height: 7rem;
+    height: 6rem;
     resize: none;
     display: inline-block;
     vertical-align: top;
