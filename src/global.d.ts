@@ -44,6 +44,7 @@ interface PropsMain {
   commentsOpt: PropsCommentArea
   editorOpt: PropsEditor
   userOpt: { user: TypeUser; onLogin: () => void }
+  loading: boolean
 }
 
 interface TypeConfig {

@@ -6,6 +6,8 @@ import TextEditor from './modules/textEditor/TextEditor'
 
 import './styles/global.scss'
 
+import styles from './styles/main.module.scss'
+
 const App = (props: { loading?: boolean }) => {
   const { state: GlobalConfig } = useContext(CommentContext)
   return (
@@ -14,7 +16,7 @@ const App = (props: { loading?: boolean }) => {
         <TextEditor />
       </div>
       <div style={{ position: 'relative' }}>
-        <div class={props.loading ? 'loading' : undefined}>
+        <div class={props.loading ? styles.loading : undefined}>
           <CommentsArea
             comments={GlobalConfig.commentsOpt.comments}
             onPagiClick={GlobalConfig.commentsOpt.onPagiClick}

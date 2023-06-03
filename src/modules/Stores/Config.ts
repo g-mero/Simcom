@@ -25,6 +25,7 @@ export function getDefaultConfig() {
       user: { id: 0, nickname: '游客', role: 0 },
       onLogin() {},
     },
+    loading: false,
   }
 
   return defaultConfig
@@ -34,5 +35,8 @@ export const CommentContext = createContext({
   state: getDefaultConfig(),
   setComments: (setFunc: (prev: TypeComment[]) => TypeComment[]) => {
     setFunc([])
+  },
+  setLoading: (bool: boolean) => {
+    console.warn(bool)
   },
 })

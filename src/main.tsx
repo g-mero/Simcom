@@ -1,5 +1,4 @@
 /* @refresh reload */
-import { createSignal } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { render } from 'solid-js/web'
 
@@ -11,8 +10,6 @@ export default function SimCom(el: HTMLDivElement) {
 }
 
 function createInst(el: HTMLDivElement) {
-  const [loading, setLoad] = createSignal(false)
-
   const [ConfigStore, setConfig] = createStore(getDefaultConfig())
   const setComments = (setFunc: (prev: TypeComment[]) => TypeComment[]) => {
     const prev = ConfigStore.commentsOpt.comments
@@ -25,6 +22,11 @@ function createInst(el: HTMLDivElement) {
         onPagiClick: state.commentsOpt.onPagiClick,
         pageCount: state.commentsOpt.pageCount,
       },
+    }))
+  }
+  const setLoading = (bool: boolean) => {
+    setConfig(() => ({
+      loading: bool,
     }))
   }
 
@@ -76,10 +78,13 @@ function createInst(el: HTMLDivElement) {
       config(opt)
     }
     isInited = true
+    el.innerHTML = ''
     render(
       () => (
-        <CommentContext.Provider value={{ state: ConfigStore, setComments }}>
-          <App loading={loading()} />
+        <CommentContext.Provider
+          value={{ state: ConfigStore, setComments, setLoading }}
+        >
+          <App loading={ConfigStore.loading} />
         </CommentContext.Provider>
       ),
       el,
@@ -89,10 +94,10 @@ function createInst(el: HTMLDivElement) {
   const scomInst: SimComInst = {
     loading: {
       start() {
-        setLoad(true)
+        setLoading(true)
       },
       close() {
-        setLoad(false)
+        setLoading(false)
       },
     },
     init,
