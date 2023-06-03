@@ -40,9 +40,6 @@ export default function TextEditor() {
         <div>
           <ScomButton
             type="primary"
-            popTip={
-              GlobalConfig.userOpt.user.id ? undefined : '登录后才能评论哦'
-            }
             onClick={() => {
               GlobalConfig.editorOpt
                 .onPost(value())
@@ -57,7 +54,7 @@ export default function TextEditor() {
             }}
             disabled={!GlobalConfig.userOpt.user.id || !value().trim()}
           >
-            发送
+            {GlobalConfig.userOpt.user.id ? '评论' : '登录后评论'}
           </ScomButton>
         </div>
       </div>
@@ -114,13 +111,12 @@ export function ReplyTextEditor(props: {
       <div class={styles['send-btn']}>
         <ScomButton
           type="primary"
-          popTip="test"
           onClick={() => {
             props.onPost(value())
           }}
           disabled={!GlobalConfig.userOpt.user.id || !value().trim()}
         >
-          发送
+          {GlobalConfig.userOpt.user.id ? '评论' : '登录后回复'}
         </ScomButton>
       </div>
     </div>

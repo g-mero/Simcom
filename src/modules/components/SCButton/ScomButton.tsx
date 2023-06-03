@@ -1,6 +1,4 @@
 import type { JSX } from 'solid-js'
-import { Show } from 'solid-js'
-import Tooltip from '../toolTips/ToolTip'
 
 import styles from './styles.module.scss'
 
@@ -41,7 +39,6 @@ function Button(props: {
 
 export default function ScomButton(props: {
   children: JSX.Element
-  popTip?: string
   type?: 'primary' | 'success'
   text?: boolean
   onClick?: JSX.EventHandler<HTMLButtonElement, MouseEvent>
@@ -50,11 +47,7 @@ export default function ScomButton(props: {
 }) {
   return (
     <>
-      <Show when={props.popTip} fallback={<Button {...props} />}>
-        <Tooltip content={props.popTip || ''}>
-          <Button {...props} />
-        </Tooltip>
-      </Show>
+      <Button {...props} />
     </>
   )
 }
