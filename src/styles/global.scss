@@ -20,11 +20,6 @@
   overflow: hidden;
   animation: fade-in-up 0.6s 0.1s backwards;
 
-  .loading {
-    opacity: 0.8;
-    filter: blur(1px);
-  }
-
   .color-light {
     color: var(--scom-color-text-light);
   }
