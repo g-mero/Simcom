@@ -93,7 +93,11 @@ export default function OneComment(props: PropsOneComment) {
               total={props.comment.replys}
               onPagiClick={(pn: number) => {
                 return props.onPagiClick(pn, props.comment.id).then((res) => {
-                  setReplys(res)
+                  // 非空才设置
+                  if (res.length > 0) {
+                    setReplys(res)
+                  }
+
                   return res
                 })
               }}
@@ -101,6 +105,7 @@ export default function OneComment(props: PropsOneComment) {
                 GlobalConfig.editorOpt
                   .onPost(value, props.comment, toUserID)
                   .then((res) => {
+                    // 成功，push到最前面
                     setReplys((prev) => [res, ...prev])
                   })
               }}
