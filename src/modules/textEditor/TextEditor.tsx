@@ -1,4 +1,3 @@
-/* eslint-disable solid/reactivity */
 import { Show, createSignal, useContext } from 'solid-js'
 import ScomButton from '../components/SCButton/ScomButton'
 import { CommentContext } from '../Stores/Config'

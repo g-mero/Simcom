@@ -10,14 +10,14 @@
     user-select: none;
 
     &.disabled {
-      cursor: default;
       pointer-events: none;
+      cursor: default;
     }
 
     &.active {
-      cursor: default;
-      pointer-events: none;
       color: var(--scom-color-hover2);
+      pointer-events: none;
+      cursor: default;
     }
 
     &:hover {
@@ -26,8 +26,8 @@
   }
 
   &.center {
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 100%;
   }
 }

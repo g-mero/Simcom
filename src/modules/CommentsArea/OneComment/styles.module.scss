@@ -5,16 +5,16 @@
 
 .comment-main {
   display: flex;
-  flex-direction: column;
   flex: 1;
+  flex-direction: column;
   padding-bottom: 1rem;
   border-bottom: 1px dashed var(--scom-color-border);
 
   .comment-header {
     display: flex;
     justify-content: space-between;
-    font-size: 1.2em;
     margin-top: 0.4em;
+    font-size: 1.2em;
     color: var(--scom-color-text-heavy);
 
     > div {
@@ -24,10 +24,10 @@
   }
 
   .comment-content {
-    padding: 0.5rem;
-    min-height: 5rem;
     display: flex;
     align-items: center;
+    min-height: 5rem;
+    padding: 0.5rem;
   }
 
   .comment-child {
@@ -37,20 +37,20 @@
 
 .avatar {
   img {
-    border-radius: 50%;
-    height: 3rem;
     width: 3rem;
-    object-fit: cover;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjYzVjNWM1IiBkPSJNMCAwaDI1NnYyNTZIMHoiLz48Y2lyY2xlIGN4PSIxMjcuNzUiIGN5PSIxMDkuNSIgcj0iNTYuNSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0yMjcuNTMgMjU2SDI4LjQ3YzMuMTMtNDAuNSAyMS45OC03NS4zMSA0OC45LTk0Ljk2YTMuNzQgMy43NCAwIDAgMSA0LjguMzIgNjUuMzYxIDY1LjM2MSAwIDAgMCA5MS4yMS0uMyAzLjc0MiAzLjc0MiAwIDAgMSA0LjgtLjM1YzI3LjE1IDE5LjU4IDQ2LjIgNTQuNTYgNDkuMzUgOTUuMjl6IiBmaWxsPSIjZmZmIi8+PC9zdmc+');
+    height: 3rem;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjYzVjNWM1IiBkPSJNMCAwaDI1NnYyNTZIMHoiLz48Y2lyY2xlIGN4PSIxMjcuNzUiIGN5PSIxMDkuNSIgcj0iNTYuNSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0yMjcuNTMgMjU2SDI4LjQ3YzMuMTMtNDAuNSAyMS45OC03NS4zMSA0OC45LTk0Ljk2YTMuNzQgMy43NCAwIDAgMSA0LjguMzIgNjUuMzYxIDY1LjM2MSAwIDAgMCA5MS4yMS0uMyAzLjc0MiAzLjc0MiAwIDAgMSA0LjgtLjM1YzI3LjE1IDE5LjU4IDQ2LjIgNTQuNTYgNDkuMzUgOTUuMjl6IiBmaWxsPSIjZmZmIi8+PC9zdmc+");
     background-repeat: no-repeat;
+    border-radius: 50%;
+    object-fit: cover;
   }
 
   margin-right: 0.4rem;
 }
 
 .light-text {
-  opacity: 0.7;
   font-size: 0.85em;
+  opacity: 0.7;
 }
 
 .option {
@@ -66,13 +66,13 @@
 .one-reply {
   display: flex;
   justify-content: space-between;
-  font-size: 0.875em;
   padding: 0.2rem;
+  font-size: 0.875em;
 
   .avatar {
     img {
-      height: 2rem;
       width: 2rem;
+      height: 2rem;
     }
   }
 
@@ -111,20 +111,20 @@
 }
 
 .date {
-  opacity: 0.6;
-  font-size: 0.6em;
   margin-left: 0.5em;
+  font-size: 0.6em;
+  opacity: 0.6;
 }
 
 .open-wrapper {
-  opacity: 0;
   max-height: 0;
-  transition: all 0.3s ease-in-out;
   overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
 
   &.open {
-    opacity: 1;
     max-height: 6rem;
+    opacity: 1;
   }
 }
 

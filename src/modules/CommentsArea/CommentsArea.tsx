@@ -22,7 +22,6 @@ export default function CommentsArea(props: PropsCommentArea) {
       <Pagination
         pageCount={props.pageCount}
         currentPage={currentPage()}
-        // eslint-disable-next-line solid/reactivity
         onPagiClick={(pn) => {
           setLoading(true)
           props

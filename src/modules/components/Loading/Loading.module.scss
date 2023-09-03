@@ -1,7 +1,7 @@
 .loading-mask {
-  z-index: 9;
   position: absolute;
   inset: 0;
+  z-index: 9;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,12 +13,12 @@
 
   > div {
     display: inline-block;
-    background-color: currentcolor;
     width: 4px;
     height: 32px;
     margin: 2px;
     margin-top: 0;
     margin-bottom: 0;
+    background-color: currentcolor;
     border-radius: 0;
     animation: line-scale 1.2s infinite ease;
 

@@ -13,10 +13,10 @@
   --scom-color-hover2: #08b9ff;
   --scom-border: 1px solid var(--scom-color-border);
 
-  color: var(--scom-color-text);
   position: relative;
   width: 100%;
   overflow: hidden;
+  color: var(--scom-color-text);
   animation: fade-in-up 0.6s 0.1s backwards;
 
   .color-light {
