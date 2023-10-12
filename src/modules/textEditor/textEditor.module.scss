@@ -1,3 +1,5 @@
+@import '../../styles/functions';
+
 .text-editor-wrapper {
   display: flex;
   flex-direction: column;
@@ -7,14 +9,20 @@
     justify-content: space-between;
     margin-top: 0.6rem;
   }
+
+  .btn-group {
+    button {
+      margin-left: 8px;
+    }
+  }
 }
 
 /* textarea区域 */
 .scom-textarea {
   position: relative;
   overflow: hidden;
-  background-color: var(--scom-color-bg);
-  border: var(--scom-border);
+  background-color: var-color('textarea-bg');
+  border: 1px solid var-color('border');
   border-radius: 0.5em;
 
   textarea {
@@ -24,7 +32,7 @@
     height: 6rem;
     padding: 0.8rem 1rem;
     font-family: inherit;
-    color: var(--scom-color-text);
+    color: var-color('text');
     vertical-align: top;
     resize: none;
     background: none;
@@ -89,6 +97,6 @@
   cursor: pointer;
 
   &:hover {
-    color: var(--scom-color-hover);
+    color: var-color('main');
   }
 }

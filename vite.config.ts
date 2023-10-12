@@ -17,7 +17,7 @@ export default defineConfig({
   css: {
     modules: {
       scopeBehaviour: 'local',
-      generateScopedName: 'gm_[hash:5]',
+      generateScopedName: 'simcom_[hash:5]',
     },
   },
   build: {

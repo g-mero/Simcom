@@ -30,8 +30,10 @@ function createInst(el: HTMLDivElement) {
     }))
   }
 
+  // prevent reduplicate
   let isInited = false
 
+  // config
   const config = (opt: Partial<TypeConfig>) => {
     if (opt) {
       if (opt.commentsOpt) {
@@ -69,6 +71,7 @@ function createInst(el: HTMLDivElement) {
     }
   }
 
+  // 初始化，挂载到dom
   const init = (opt: Partial<TypeConfig>) => {
     if (isInited) {
       console.warn('simcom', '阻止了重复的初始化行为，请不要重复初始化')

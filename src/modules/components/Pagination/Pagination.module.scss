@@ -1,3 +1,5 @@
+@import '../../../styles/functions';
+
 .pagination {
   display: flex;
 
@@ -15,13 +17,13 @@
     }
 
     &.active {
-      color: var(--scom-color-hover2);
+      color: var-color('main');
       pointer-events: none;
       cursor: default;
     }
 
     &:hover {
-      color: var(--scom-color-hover2);
+      color: var-color('main');
     }
   }
 

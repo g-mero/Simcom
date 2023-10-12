@@ -8,6 +8,20 @@ export default function TextEditor() {
   const [value, setValue] = createSignal('')
 
   const { state: GlobalConfig, setComments } = useContext(CommentContext)
+
+  // 提交按钮的提示信息
+  const titleInfo = () => {
+    if (GlobalConfig.userOpt.user.id > 0) {
+      if (value().trim()) {
+        return undefined
+      } else {
+        return '请输入点什么吧'
+      }
+    } else {
+      return '请先登录'
+    }
+  }
+
   return (
     <div class={styles['text-editor-wrapper']}>
       <div class={styles['scom-textarea']}>
@@ -36,25 +50,38 @@ export default function TextEditor() {
             欢迎你，{GlobalConfig.userOpt.user.nickname}
           </Show>
         </div>
-        <div>
+        <div class={styles['btn-group']}>
+          <Show when={!(GlobalConfig.userOpt.user.id > 0)}>
+            <ScomButton
+              flat={true}
+              label="登录"
+              type="success"
+              onClick={() => {
+                GlobalConfig.userOpt.onLogin()
+              }}
+            />
+          </Show>
           <ScomButton
+            label="提交"
             type="primary"
             onClick={() => {
-              GlobalConfig.editorOpt
-                .onPost(value())
-                .then((res) => {
-                  setComments((prev) => {
-                    return [res, ...prev]
+              // 非空才提交
+              if (!titleInfo()) {
+                GlobalConfig.editorOpt
+                  .onPost(value())
+                  .then((res) => {
+                    setComments((prev) => {
+                      return [res, ...prev]
+                    })
                   })
-                })
-                .catch((e) => {
-                  throw e
-                })
+                  .catch((e) => {
+                    throw e
+                  })
+              }
             }}
-            disabled={!GlobalConfig.userOpt.user.id || !value().trim()}
-          >
-            {GlobalConfig.userOpt.user.id ? '评论' : '登录后评论'}
-          </ScomButton>
+            title={titleInfo()}
+            disabled={!!titleInfo()}
+          />
         </div>
       </div>
     </div>
@@ -88,6 +115,18 @@ export function ReplyTextEditor(props: {
 
   const { state: GlobalConfig } = useContext(CommentContext)
 
+  const titleInfo = () => {
+    if (GlobalConfig.userOpt.user.id > 0) {
+      if (value().trim()) {
+        return undefined
+      } else {
+        return '请输入点什么吧'
+      }
+    } else {
+      return '请先登录'
+    }
+  }
+
   return (
     <div class={styles['reply-editor-wrapper']}>
       <div class={styles['scom-textarea']}>
@@ -109,14 +148,15 @@ export function ReplyTextEditor(props: {
 
       <div class={styles['send-btn']}>
         <ScomButton
+          label="回复"
+          title={titleInfo()}
           type="primary"
           onClick={() => {
-            props.onPost(value())
+            // 非空才提交
+            if (!titleInfo()) props.onPost(value())
           }}
-          disabled={!GlobalConfig.userOpt.user.id || !value().trim()}
-        >
-          {GlobalConfig.userOpt.user.id ? '评论' : '登录后回复'}
-        </ScomButton>
+          disabled={!!titleInfo()}
+        />
       </div>
     </div>
   )

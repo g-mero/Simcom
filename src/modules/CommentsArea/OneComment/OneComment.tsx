@@ -11,7 +11,6 @@ import {
 } from 'solid-js'
 import { CommentContext } from '../../Stores/Config'
 import { timeFormat } from '../../../utils/timeUtils'
-import Icon from '../../components/Icon/Icon'
 import Pagination from '../../components/Pagination/Pagination'
 import ScomButton from '../../components/SCButton/ScomButton'
 import { ReplyTextEditor } from '../../textEditor/TextEditor'
@@ -74,15 +73,14 @@ export default function OneComment(props: PropsOneComment) {
           </div>
           <div class={styles.option}>
             <ScomButton
+              icon="majesticons:comment-line"
               onClick={() => {
                 if (replyID() === id) setReplyID('')
                 else setReplyID(id)
               }}
               text
               active={replyID() === id}
-            >
-              <Icon icon="majesticons:comment-line" />
-            </ScomButton>
+            />
           </div>
         </div>
         <div class={styles['comment-content']}>{props.comment.content}</div>
@@ -233,6 +231,24 @@ function OneReply(
                 >{`回复@${props.comment.toUserNickname}`}</span>
               </Show>
             </div>
+            <div
+              class={`${styles.option} ${
+                replyID() === id ? styles.active : ''
+              }`}
+            >
+              <span class={styles['light-text']}>
+                {timeFormat(props.comment.createAt)}
+              </span>
+              <ScomButton
+                icon="majesticons:comment-line"
+                onClick={() => {
+                  if (replyID() === id) setReplyID('')
+                  else setReplyID(id)
+                }}
+                text
+                active={replyID() === id}
+              />
+            </div>
           </div>
           <div class={styles['comment-content']}>{props.comment.content}</div>
           <ReplyEditor
@@ -243,21 +259,6 @@ function OneReply(
             }}
           />
         </div>
-      </div>
-      <div class={`${styles.option} ${replyID() === id ? styles.active : ''}`}>
-        <span class={styles['light-text']}>
-          {timeFormat(props.comment.createAt)}
-        </span>
-        <ScomButton
-          onClick={() => {
-            if (replyID() === id) setReplyID('')
-            else setReplyID(id)
-          }}
-          text
-          active={replyID() === id}
-        >
-          <Icon icon="majesticons:comment-line" />
-        </ScomButton>
       </div>
     </div>
   )

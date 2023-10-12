@@ -1,3 +1,5 @@
+@import '../../../styles/functions';
+
 .one-comment {
   display: flex;
   padding: 0.5rem 1rem 1rem;
@@ -8,14 +10,14 @@
   flex: 1;
   flex-direction: column;
   padding-bottom: 1rem;
-  border-bottom: 1px dashed var(--scom-color-border);
+  border-bottom: 1px dashed var-color('border');
 
   .comment-header {
     display: flex;
     justify-content: space-between;
     margin-top: 0.4em;
-    font-size: 1.2em;
-    color: var(--scom-color-text-heavy);
+    font-size: 1em;
+    color: var-color('heavy');
 
     > div {
       display: flex;
@@ -26,12 +28,12 @@
   .comment-content {
     display: flex;
     align-items: center;
-    min-height: 5rem;
-    padding: 0.5rem;
+    min-height: 3rem;
+    padding: 0.5em;
   }
 
   .comment-child {
-    padding: 1rem;
+    padding: 0;
   }
 }
 
@@ -39,7 +41,7 @@
   img {
     width: 3rem;
     height: 3rem;
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjYzVjNWM1IiBkPSJNMCAwaDI1NnYyNTZIMHoiLz48Y2lyY2xlIGN4PSIxMjcuNzUiIGN5PSIxMDkuNSIgcj0iNTYuNSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0yMjcuNTMgMjU2SDI4LjQ3YzMuMTMtNDAuNSAyMS45OC03NS4zMSA0OC45LTk0Ljk2YTMuNzQgMy43NCAwIDAgMSA0LjguMzIgNjUuMzYxIDY1LjM2MSAwIDAgMCA5MS4yMS0uMyAzLjc0MiAzLjc0MiAwIDAgMSA0LjgtLjM1YzI3LjE1IDE5LjU4IDQ2LjIgNTQuNTYgNDkuMzUgOTUuMjl6IiBmaWxsPSIjZmZmIi8+PC9zdmc+");
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjYzVjNWM1IiBkPSJNMCAwaDI1NnYyNTZIMHoiLz48Y2lyY2xlIGN4PSIxMjcuNzUiIGN5PSIxMDkuNSIgcj0iNTYuNSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0yMjcuNTMgMjU2SDI4LjQ3YzMuMTMtNDAuNSAyMS45OC03NS4zMSA0OC45LTk0Ljk2YTMuNzQgMy43NCAwIDAgMSA0LjguMzIgNjUuMzYxIDY1LjM2MSAwIDAgMCA5MS4yMS0uMyAzLjc0MiAzLjc0MiAwIDAgMSA0LjgtLjM1YzI3LjE1IDE5LjU4IDQ2LjIgNTQuNTYgNDkuMzUgOTUuMjl6IiBmaWxsPSIjZmZmIi8+PC9zdmc+');
     background-repeat: no-repeat;
     border-radius: 50%;
     object-fit: cover;
@@ -106,7 +108,7 @@
   cursor: pointer;
 
   &:hover {
-    color: var(--scom-color-hover);
+    color: var-color('main');
   }
 }
 

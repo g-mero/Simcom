@@ -1,6 +1,6 @@
 {
   "extends": ["@xbmlz/eslint-config-solid", "@xbmlz/eslint-config-prettier"],
-  "ignorePatterns": ["*.mdx", "*.md", "*.rs", "*.toml", "*.js"],
+  "ignorePatterns": ["*.mdx", "*.md", "*.rs", "*.toml", "*.js","*.html"],
   "rules": {
     "prettier/prettier": "error",
     "arrow-body-style": "off",

@@ -1,33 +1,16 @@
+@import '../../../styles/functions';
+
 .btn {
-  &.default {
-    --scom-btn-color-txt: inherit;
-    --scom-btn-color-bg: inherit;
-    --scom-btn-color-bg-hover: #0000002c;
-    --scom-btn-border-color: #0000002c;
-  }
-
-  &.primary {
-    --scom-btn-color-txt: #fff;
-    --scom-btn-color-bg: #409eff;
-    --scom-btn-color-bg-hover: #79bbff;
-    --scom-btn-border-color: #79bbff;
-  }
-
-  &.success {
-    --scom-btn-color-txt: #fff;
-    --scom-btn-color-bg: #67c23a;
-    --scom-btn-color-bg-hover: #95d475;
-    --scom-btn-border-color: #95d475;
-  }
-
   &.text {
     padding: 0 !important;
+    color: var-color('light');
     background: none !important;
+    border: none;
     transition: 0.25s;
 
     &:hover,
     &.active {
-      color: var(--scom-color-hover);
+      color: var-color('main');
     }
   }
 
@@ -37,23 +20,34 @@
   padding: 0.4rem 0.8rem;
   font-size: 1em;
   line-height: 1;
-  color: var(--scom-btn-color-txt);
+  color: var-color('btn-text');
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
-  background-color: var(--scom-btn-color-bg);
-  border: 1px solid var(--scom-btn-border-color);
+  background-color: var-color('main');
+  border: 1px solid var-color('main-light');
   border-radius: 4px;
   outline: none;
   transition: 0.1s;
 
+  &.flat {
+    color: var-color('text');
+    background-color: transparent;
+    border-color: var-color('border');
+
+    &:hover {
+      color: var-color('main');
+      background-color: transparent;
+      border-color: var-color('main');
+    }
+  }
+
   &:hover,
   &.disabled {
-    background-color: var(--scom-btn-color-bg-hover);
+    background-color: var-color('main-light');
   }
 
   &.disabled {
-    pointer-events: none;
     cursor: not-allowed;
   }
 }
