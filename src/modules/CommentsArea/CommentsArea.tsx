@@ -14,7 +14,7 @@ export default function CommentsArea(props: PropsCommentArea) {
   const { setLoading } = useContext(CommentContext)
   return (
     <div style={{ 'min-height': '10rem' }}>
-      <For each={comments()}>
+      <For each={comments()} fallback={<Empty />}>
         {(item) => {
           return <OneComment comment={item} onPagiClick={props.onPagiClick} />
         }}
@@ -37,6 +37,22 @@ export default function CommentsArea(props: PropsCommentArea) {
             })
         }}
       />
+    </div>
+  )
+}
+
+function Empty() {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        height: '5em',
+        'justify-content': 'center',
+        'align-items': 'center',
+        background: 'var(--simcom-color-textarea-bg)',
+      }}
+    >
+      暂无评论,快来抢沙发吧
     </div>
   )
 }

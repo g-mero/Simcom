@@ -1,4 +1,5 @@
 import { Show, createSignal, useContext } from 'solid-js'
+
 import ScomButton from '../components/SCButton/ScomButton'
 import { CommentContext } from '../Stores/Config'
 import styles from './textEditor.module.scss'
@@ -6,6 +7,7 @@ import styles from './textEditor.module.scss'
 export default function TextEditor() {
   const [fontCount, setFontCount] = createSignal(0)
   const [value, setValue] = createSignal('')
+  const [isPosting, setPosting] = createSignal(false)
 
   const { state: GlobalConfig, setComments } = useContext(CommentContext)
 
@@ -64,18 +66,22 @@ export default function TextEditor() {
           <ScomButton
             label="提交"
             type="primary"
+            loading={isPosting()}
             onClick={() => {
               // 非空才提交
               if (!titleInfo()) {
+                setPosting(true)
                 GlobalConfig.editorOpt
                   .onPost(value())
                   .then((res) => {
-                    setComments((prev) => {
-                      return [res, ...prev]
-                    })
+                    if (res) {
+                      setComments((prev) => {
+                        return [res, ...prev]
+                      })
+                    }
                   })
-                  .catch((e) => {
-                    throw e
+                  .finally(() => {
+                    setPosting(false)
                   })
               }
             }}
@@ -108,10 +114,11 @@ function LoginInfo() {
 
 export function ReplyTextEditor(props: {
   placeHolder?: string
-  onPost: (value: string) => void
+  onPost: (value: string) => Promise<void>
 }) {
   const [fontCount, setFontCount] = createSignal(0)
   const [value, setValue] = createSignal('')
+  const [isPosting, setPosting] = createSignal(false)
 
   const { state: GlobalConfig } = useContext(CommentContext)
 
@@ -150,10 +157,16 @@ export function ReplyTextEditor(props: {
         <ScomButton
           label="回复"
           title={titleInfo()}
+          loading={isPosting()}
           type="primary"
           onClick={() => {
             // 非空才提交
-            if (!titleInfo()) props.onPost(value())
+            if (!titleInfo()) {
+              setPosting(true)
+              props.onPost(value()).finally(() => {
+                setPosting(false)
+              })
+            }
           }}
           disabled={!!titleInfo()}
         />

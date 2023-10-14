@@ -1,16 +1,11 @@
 @import '../../../styles/functions';
 
-.one-comment {
-  display: flex;
-  padding: 0.5rem 1rem 1rem;
-}
-
 .comment-main {
   display: flex;
   flex: 1;
   flex-direction: column;
   padding-bottom: 1rem;
-  border-bottom: 1px dashed var-color('border');
+  border-bottom: 1px solid var-color('border');
 
   .comment-header {
     display: flex;
@@ -37,10 +32,19 @@
   }
 }
 
+.one-comment {
+  display: flex;
+  padding: 0.5rem 1rem 1rem;
+}
+
+.color-highlight {
+  color: var-color('main');
+}
+
 .avatar {
   img {
-    width: 3rem;
-    height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjYzVjNWM1IiBkPSJNMCAwaDI1NnYyNTZIMHoiLz48Y2lyY2xlIGN4PSIxMjcuNzUiIGN5PSIxMDkuNSIgcj0iNTYuNSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0yMjcuNTMgMjU2SDI4LjQ3YzMuMTMtNDAuNSAyMS45OC03NS4zMSA0OC45LTk0Ljk2YTMuNzQgMy43NCAwIDAgMSA0LjguMzIgNjUuMzYxIDY1LjM2MSAwIDAgMCA5MS4yMS0uMyAzLjc0MiAzLjc0MiAwIDAgMSA0LjgtLjM1YzI3LjE1IDE5LjU4IDQ2LjIgNTQuNTYgNDkuMzUgOTUuMjl6IiBmaWxsPSIjZmZmIi8+PC9zdmc+');
     background-repeat: no-repeat;
     border-radius: 50%;
@@ -100,6 +104,16 @@
   &:hover {
     .option {
       opacity: 1;
+    }
+  }
+}
+
+.reply-wrapper {
+  position: relative;
+
+  &.loading {
+    > .one-reply {
+      opacity: 0.5;
     }
   }
 }

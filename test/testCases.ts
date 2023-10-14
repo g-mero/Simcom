@@ -30,11 +30,11 @@ async function genComments(num: number, pn: number) {
       nickname: user.nickName,
       avatarUrl: user.avatarUrl,
       content: `${hitokoto} ${pn}`,
-      replys,
+      replyCount: replys,
       toCommentID: 0,
       toUserNickname: '',
       children: replys > 0 ? getReplys(1, i + 1, 3).data : [],
-      createAt: '2023-02-19T17:33:27.1343681+08:00',
+      createdAt: '2023-02-19T17:33:27.1343681+08:00',
     }
 
     result.push(comment)
@@ -55,11 +55,11 @@ function genReplys(num: number, pn: number) {
       nickname: user.nickName,
       avatarUrl: user.avatarUrl,
       content: `测试回复 ${pn}`,
-      replys: 0,
-      toCommentID: 0,
+      replyCount: 0,
+      toCommentID: 1,
       toUserNickname: toUser ? toUser.nickName : '',
       children: [],
-      createAt: '2023-02-19T17:33:27.1343681+08:00',
+      createdAt: '2023-02-19T17:33:27.1343681+08:00',
     }
 
     result.push(comment)
@@ -100,11 +100,11 @@ function postComment(value: string, toCommenID?: number, toUserID?: number) {
     nickname: user.nickName,
     avatarUrl: user.avatarUrl,
     content: value,
-    replys: 0,
+    replyCount: 0,
     toCommentID: toCommenID || 0,
     toUserNickname: toUserID ? users[toUserID - 1].nickName : '',
     children: [],
-    createAt: '2023-02-19T17:33:27.1343681+08:00',
+    createdAt: '2023-02-19T17:33:27.1343681+08:00',
   }
 
   return comment

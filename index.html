@@ -62,7 +62,9 @@
             maxLength: 10,
             onPost: (value, toComment, toUserID) => {
               return new Promise((resolve) => {
-                resolve(postComment(value, toComment?.id, toUserID))
+                setTimeout(() => {
+                  resolve(postComment(value, toComment, toUserID))
+                }, 1000)
               })
             },
           },
@@ -97,7 +99,9 @@
                   maxLength: 200,
                   onPost: (value, toComment, toUserID) => {
                     return new Promise((resolve) => {
-                      resolve(postComment(value, toComment?.id, toUserID))
+                      setTimeout(() => {
+                        resolve(postComment(value, toComment, toUserID))
+                      }, 1000)
                     })
                   },
                 },
@@ -106,7 +110,9 @@
                   onPagiClick: (pn, commentID) => {
                     if (commentID) {
                       return new Promise((resolve) => {
-                        resolve(getReplys(pn, commentID).data)
+                        setTimeout(() => {
+                          resolve(getReplys(pn, commentID).data)
+                        }, 1000)
                       })
                     } else {
                       return getComments(pn).then((res) => {

@@ -6,10 +6,10 @@ interface TypeComment {
   content: string
   // likes: number
   // isEdited: boolean
-  createAt: string
+  createdAt: string
   toUserNickname: string
   toCommentID: number
-  replys: number // 回复总数
+  replyCount: number // 回复总数
   children: TypeComment[] // 回复
 }
 
@@ -19,8 +19,7 @@ interface PropsEditor {
   onPost: (
     value: string,
     toComment?: TypeComment,
-    toUserID?: number,
-  ) => Promise<TypeComment>
+  ) => Promise<TypeComment | null>
 }
 
 interface PropsOneComment {
@@ -37,6 +36,7 @@ interface PropsCommentArea {
 interface TypeUser {
   id: number
   nickname: string
+  avatarUrl: string
   role: number // 1: 博主(同时也是管理员) 2: 注册用户 0: 游客
 }
 

@@ -12,12 +12,15 @@ function Button(props: {
   onClick?: JSX.EventHandler<HTMLButtonElement, MouseEvent>
   active?: boolean
   disabled?: boolean
+  loading?: boolean
 }) {
   return (
     <button
       class={`${styles.btn} ${props.active ? styles.active : ''} ${
         props.disabled ? styles.disabled : ''
-      } ${props.flat ? styles.flat : ''} ${props.text ? styles.text : ''} `}
+      } ${props.flat ? styles.flat : ''} ${props.text ? styles.text : ''} ${
+        props.loading ? styles.loading : ''
+      }  `}
       type="button"
       title={props.title}
       onClick={(ev) => {
@@ -26,8 +29,11 @@ function Button(props: {
         }
       }}
     >
-      <Show when={props.icon} fallback={props.label}>
+      <Show when={props.icon} fallback={<span>{props.label}</span>}>
         <Icon icon={props.icon || ''} />
+      </Show>
+      <Show when={props.loading}>
+        <div class={`${styles['load-circle']}`} />
       </Show>
     </button>
   )
@@ -43,6 +49,7 @@ export default function ScomButton(props: {
   onClick?: JSX.EventHandler<HTMLButtonElement, MouseEvent>
   active?: boolean
   disabled?: boolean
+  loading?: boolean
 }) {
   return (
     <>

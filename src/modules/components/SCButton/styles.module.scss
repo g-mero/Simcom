@@ -11,9 +11,18 @@
     &:hover,
     &.active {
       color: var-color('main');
+
+      &.disabled {
+        color: var-color('light');
+      }
     }
   }
 
+  > span {
+    transition: all 0.35s;
+  }
+
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -39,6 +48,12 @@
       color: var-color('main');
       background-color: transparent;
       border-color: var-color('main');
+
+      &.disabled {
+        color: var-color('text');
+        background-color: transparent;
+        border-color: var-color('border');
+      }
     }
   }
 
@@ -49,5 +64,32 @@
 
   &.disabled {
     cursor: not-allowed;
+  }
+
+  &.loading {
+    > span {
+      opacity: 0;
+    }
+  }
+}
+
+.load-circle {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  border: 3px solid var-color('btn-text');
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: circle 1s infinite linear;
+}
+
+// 转转转动画
+@keyframes circle {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }

@@ -1,24 +1,14 @@
 @import 'functions';
 
 $theme-vars: (
-  'main': #08b9ff,
-  'main-light': tint-color(#08b9ff, 30%),
+  'main': #048de9,
+  'main-light': tint-color(#048de9, 30%),
   'textarea-bg': #fafafa,
   'btn-text': #fff,
   'text': #575757,
   'light': #7a7a7a,
   'heavy': #000,
   'border': #b9b9b9,
-);
-$theme-dark-vars: (
-  'main': shade-color(#08b9ff, 10%),
-  'main-light': shade-color(#08b9ff, 35%),
-  'textarea-bg': #1d1c1c,
-  'btn-text': #fff,
-  'text': #bdbdbd,
-  'light': #646262,
-  'heavy': #eceaea,
-  'border': #494848,
 );
 
 @mixin base-vars($theme) {
@@ -27,16 +17,13 @@ $theme-dark-vars: (
   }
 }
 
-.simcom-wrapper.theme-dark {
-  @include base-vars($theme-dark-vars);
-}
-
 .simcom-wrapper {
   @include base-vars($theme-vars);
 
   position: relative;
   width: 100%;
   overflow: hidden;
+  font-size: 14px;
   color: var-color('text');
   animation: fade-in-up 0.6s 0.1s backwards;
 
