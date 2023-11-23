@@ -22,7 +22,7 @@ export function getDefaultConfig() {
       },
     },
     userOpt: {
-      user: { id: 0, nickname: '游客', role: 0, avatarUrl: '' },
+      user: { nickname: '', role: 0, avatarUrl: '' },
       onLogin() {},
     },
     loading: false,

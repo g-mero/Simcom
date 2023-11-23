@@ -1,6 +1,6 @@
+/* eslint-disable solid/no-innerhtml */
 /* eslint-disable unicorn/prefer-add-event-listener */
 /* eslint-disable solid/event-handlers */
-/* eslint-disable solid/reactivity */
 import {
   For,
   Show,
@@ -11,7 +11,7 @@ import {
 } from 'solid-js'
 
 import { CommentContext } from '../../Stores/Config'
-import { timeFormat } from '../../../utils/timeUtils'
+import { timeFormat, timePast } from '../../../utils/timeUtils'
 import Pagination from '../../components/Pagination/Pagination'
 import ScomButton from '../../components/SCButton/ScomButton'
 import { ReplyTextEditor } from '../../textEditor/TextEditor'
@@ -21,7 +21,7 @@ import styles from './styles.module.scss'
 function ReplyEditor(props: {
   show: boolean
   placeHolder?: string
-  onPost: (value: string) => Promise<void>
+  onPost: (value: string) => Promise<any>
 }) {
   return (
     <div class={`${styles['open-wrapper']} ${props.show ? styles.open : ''}`}>
@@ -49,6 +49,8 @@ export default function OneComment(props: PropsOneComment) {
 
   const { state: GlobalConfig } = useContext(CommentContext)
 
+  const isAuthed = () => GlobalConfig.userOpt.user.nickname.length > 0
+
   createEffect(() => {
     setReplys(props.comment.children)
   })
@@ -69,17 +71,31 @@ export default function OneComment(props: PropsOneComment) {
       </div>
       <div class={styles['comment-main']}>
         <div class={styles['comment-header']}>
-          <div>
-            <div class={styles['color-highlight']}>
+          <div style={{ display: 'flex', 'align-items': 'center' }}>
+            <div
+              class={styles['color-highlight']}
+              style={{ 'font-size': '1.15em', 'font-weight': 'bold' }}
+            >
               {props.comment.nickname}
             </div>
-            <div class={styles.date}>{timeFormat(props.comment.createdAt)}</div>
+            <For each={props.comment.tags}>
+              {(item) => {
+                return <span class={styles.tag}>{item}</span>
+              }}
+            </For>
+            <div
+              class={styles.date}
+              title={timeFormat(props.comment.createdAt)}
+            >
+              {timePast(props.comment.createdAt)}
+            </div>
           </div>
+
           <div class={styles.option}>
             <ScomButton
               icon="majesticons:comment-line"
               onClick={() => {
-                if (GlobalConfig.userOpt.user.id <= 0) {
+                if (!isAuthed() || replyID() === id) {
                   setReplyID('')
                   return
                 }
@@ -88,22 +104,34 @@ export default function OneComment(props: PropsOneComment) {
               }}
               text
               active={replyID() === id}
-              disabled={GlobalConfig.userOpt.user.id <= 0}
-              title={GlobalConfig.userOpt.user.id <= 0 ? '请先登录' : undefined}
+              disabled={!isAuthed()}
+              title={isAuthed() ? undefined : '请先登录'}
             />
           </div>
         </div>
-        <div class={styles['comment-content']}>{props.comment.content}</div>
+        <div
+          class={styles['comment-content']}
+          innerHTML={props.comment.content}
+        />
+        <div class={styles['comment-extras']}>
+          <For each={props.comment.extras}>
+            {(item) => {
+              return <span>{item}</span>
+            }}
+          </For>
+        </div>
+        {/* 这里是回复跟评论的编辑框 */}
         <ReplyEditor
           show={replyID() === id}
-          onPost={async (value) => {
-            const res = await GlobalConfig.editorOpt.onPost(
-              value,
-              props.comment,
-            )
-            if (res) {
-              setReplys((prev) => [res, ...prev])
-            }
+          onPost={(value) => {
+            return GlobalConfig.editorOpt
+              .onPost(value, props.comment)
+              .then((res) => {
+                if (res) {
+                  setReplys((prev) => [res, ...prev])
+                  setReplyID('')
+                }
+              })
           }}
         />
         <Show when={replys().length > 0}>
@@ -112,23 +140,27 @@ export default function OneComment(props: PropsOneComment) {
             <RenderReplys
               replys={replys()}
               total={props.comment.replyCount}
-              onPagiClick={async (pn: number) => {
-                const res = await props.onPagiClick(pn, props.comment.id)
-                // 非空才设置
-                if (res.length > 0) {
-                  setReplys(res)
-                }
-                return res
+              onPagiClick={(pn: number) => {
+                return props.onPagiClick(pn, props.comment).then((res) => {
+                  // 非空才设置
+                  if (res && res.length > 0) {
+                    setReplys(res)
+                    return res
+                  }
+                  return []
+                })
               }}
-              onPost={async (value, toComment) => {
-                const res = await GlobalConfig.editorOpt.onPost(
-                  value,
-                  toComment,
-                )
-                if (res) {
-                  // 成功，push到最前面
-                  setReplys((prev) => [res, ...prev])
-                }
+              // 传递给子组件的父评论id
+              onPost={(value, parentComment) => {
+                return GlobalConfig.editorOpt
+                  .onPost(value, props.comment, parentComment)
+                  .then((res) => {
+                    if (res) {
+                      setReplys((prev) => [res, ...prev])
+                      return true
+                    }
+                    return false
+                  })
               }}
             />
           </div>
@@ -143,44 +175,13 @@ function RenderReplys(props: {
   replys: TypeComment[]
   onPagiClick: (pn: number) => Promise<TypeComment[]>
   total: number
-  onPost: (value: string, toComment: TypeComment) => Promise<void>
+  onPost: (value: string, parentComment: TypeComment) => Promise<boolean>
 }) {
   const [showall, setShowall] = createSignal(false)
-  const [onPagiClick, setOnPagiClick] = createSignal<(pn: number) => void>(
-    () => {},
-  )
   const [currentPage, setCurPage] = createSignal(0)
   const [pageCount, setPageCount] = createSignal(0)
   const [loading, setLoading] = createSignal(false)
 
-  createEffect(() => {
-    const tmpFunc = (pn: number) => {
-      if (loading()) return
-      setLoading(true)
-      props
-        .onPagiClick(pn)
-        .then((res) => {
-          if (res.length > 0) {
-            setCurPage(pn)
-
-            // 根据第一页的size来确定页码
-            if (pn === 1) {
-              setPageCount(Math.ceil(props.total / res.length))
-            }
-
-            if (!showall()) {
-              setShowall(true)
-            }
-          }
-        })
-        .finally(() => {
-          setLoading(false)
-        })
-    }
-
-    // 设置页码点击的触发函数
-    setOnPagiClick(() => tmpFunc)
-  })
   return (
     <>
       <div
@@ -194,7 +195,7 @@ function RenderReplys(props: {
             return (
               <OneReply
                 comment={item}
-                onClick={(value) => {
+                onPost={(value) => {
                   return props.onPost(value, item)
                 }}
               />
@@ -209,19 +210,45 @@ function RenderReplys(props: {
           <span
             class={styles['click-text']}
             onClick={() => {
-              onPagiClick()(1)
+              setLoading(true)
+              const total = props.total
+              props
+                .onPagiClick(1)
+                .then((res) => {
+                  if (res.length > 0) {
+                    setCurPage(1)
+                    // 根据第一页的size来确定页码
+                    setPageCount(Math.ceil(total / res.length))
+                    setShowall(true)
+                  }
+                })
+                .finally(() => {
+                  setLoading(false)
+                })
             }}
           >
             查看全部
           </span>
         </div>
       </Show>
+      {/* 分页 */}
       <Show when={showall()}>
         <div class={styles['light-text']}>
           <Pagination
+            disabled={loading()}
             pageCount={pageCount()}
             currentPage={currentPage()}
-            onPagiClick={onPagiClick()}
+            onPagiClick={(pn) => {
+              setLoading(true)
+              props
+                .onPagiClick(pn)
+                .then(() => {
+                  setCurPage(pn)
+                })
+                .finally(() => {
+                  setLoading(false)
+                })
+            }}
           />
         </div>
       </Show>
@@ -229,13 +256,15 @@ function RenderReplys(props: {
   )
 }
 
+// 一条回复
 function OneReply(
   props: Omit<PropsOneComment, 'onPagiClick'> & {
-    onClick: (value: string) => Promise<void>
+    onPost: (value: string) => Promise<boolean>
   },
 ) {
   const { state: GlobalConfig } = useContext(CommentContext)
   const id = createUniqueId()
+  const isAuthed = () => GlobalConfig.userOpt.user.nickname.length > 0
   return (
     <div class={`${styles['one-reply']} ${styles['fade-in']}`}>
       <div class={styles['reply-main']}>
@@ -257,11 +286,18 @@ function OneReply(
               <div class={styles['color-highlight']}>
                 {props.comment.nickname}
               </div>
-              <Show when={props.comment.toUserNickname}>
+              <For each={props.comment.tags}>
+                {(item) => {
+                  return <span class={styles.tag}>{item}</span>
+                }}
+              </For>
+              <Show when={props.comment.at}>
                 <span
                   class={styles['light-text']}
-                  style={{ 'margin-left': '.5em' }}
-                >{`回复@${props.comment.toUserNickname}`}</span>
+                  style={{ 'margin-left': '.25em' }}
+                >
+                  @{props.comment.at}
+                </span>
               </Show>
             </div>
             <div
@@ -270,12 +306,12 @@ function OneReply(
               }`}
             >
               <span class={styles['light-text']}>
-                {timeFormat(props.comment.createdAt)}
+                {timePast(props.comment.createdAt)}
               </span>
               <ScomButton
                 icon="majesticons:comment-line"
                 onClick={() => {
-                  if (GlobalConfig.userOpt.user.id <= 0 || replyID() === id) {
+                  if (!isAuthed() || replyID() === id) {
                     setReplyID('')
                     return
                   }
@@ -283,19 +319,22 @@ function OneReply(
                 }}
                 text
                 active={replyID() === id}
-                disabled={GlobalConfig.userOpt.user.id <= 0}
-                title={
-                  GlobalConfig.userOpt.user.id <= 0 ? '请先登录' : undefined
-                }
+                disabled={!isAuthed()}
+                title={isAuthed() ? undefined : '请先登录'}
               />
             </div>
           </div>
-          <div class={styles['comment-content']}>{props.comment.content}</div>
+          <div
+            class={styles['comment-content']}
+            innerHTML={props.comment.content}
+          />
           <ReplyEditor
             show={replyID() === id}
-            placeHolder={`回复 @${props.comment.nickname}`}
+            placeHolder={'撰写回复'}
             onPost={(value) => {
-              return props.onClick(value)
+              return props.onPost(value).then((res) => {
+                res && setReplyID('')
+              })
             }}
           />
         </div>

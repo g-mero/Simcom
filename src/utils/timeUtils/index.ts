@@ -1,4 +1,4 @@
-export function timeFormat(time: string): string {
+export function timePast(time: string): string {
   const past = new Date(time)
   const now = new Date(Date.now())
 
@@ -17,4 +17,9 @@ export function timeFormat(time: string): string {
   tmp = now.getSeconds() - past.getSeconds()
   if (tmp > 0) return `${tmp}秒前`
   return '刚刚'
+}
+
+export function timeFormat(time: string): string {
+  const date = new Date(time)
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
 }

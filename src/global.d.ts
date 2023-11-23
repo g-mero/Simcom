@@ -1,16 +1,20 @@
 interface TypeComment {
-  id: number
-  userID: number
   nickname: string
   avatarUrl: string
   content: string
+  at?: string // @的用户昵称
+  // 附加数据，渲染到用户名下方
+  extras?: string[]
+
+  // 用户标签, 渲染到用户名右侧
+  tags?: string[]
+
   // likes: number
   // isEdited: boolean
   createdAt: string
-  toUserNickname: string
-  toCommentID: number
   replyCount: number // 回复总数
   children: TypeComment[] // 回复
+  storedData?: any // 保存的数据
 }
 
 interface PropsEditor {
@@ -18,23 +22,23 @@ interface PropsEditor {
   maxLength: number
   onPost: (
     value: string,
-    toComment?: TypeComment,
+    rootComment?: TypeComment,
+    parentComment?: TypeComment,
   ) => Promise<TypeComment | null>
 }
 
 interface PropsOneComment {
   comment: TypeComment
-  onPagiClick: (pn: number, commentID?: number) => Promise<TypeComment[]>
+  onPagiClick: (pn: number, rootComment: TypeComment) => Promise<TypeComment[]>
 }
 
 interface PropsCommentArea {
   comments: TypeComment[]
   pageCount: number
-  onPagiClick: (pn: number, commentID?: number) => Promise<TypeComment[]>
+  onPagiClick: (pn: number, rootComment?: TypeComment) => Promise<TypeComment[]>
 }
 
 interface TypeUser {
-  id: number
   nickname: string
   avatarUrl: string
   role: number // 1: 博主(同时也是管理员) 2: 注册用户 0: 游客
@@ -57,6 +61,7 @@ interface SimComInst {
   loading: {
     start: () => void
     close: () => void
+    status: () => boolean
   }
   init: (opt: Partial<TypeConfig>) => void
   setData: (data?: TypeComment[]) => void

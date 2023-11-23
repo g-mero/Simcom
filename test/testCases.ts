@@ -7,6 +7,10 @@ async function fetchOneWord() {
   return hitokoto
 }
 
+function extras() {
+  return ['win11', '安徽']
+}
+
 function getRandInt(max: number) {
   return Math.floor(Math.random() * max)
 }
@@ -25,16 +29,15 @@ async function genComments(num: number, pn: number) {
     commentsTotal.set(i + 1, replys)
 
     const comment: TypeComment = {
-      id: i + 1,
-      userID: user.id,
       nickname: user.nickName,
       avatarUrl: user.avatarUrl,
       content: `${hitokoto} ${pn}`,
       replyCount: replys,
-      toCommentID: 0,
-      toUserNickname: '',
       children: replys > 0 ? getReplys(1, i + 1, 3).data : [],
       createdAt: '2023-02-19T17:33:27.1343681+08:00',
+      storedData: { id: i + 1, userID: user.id },
+      extras: extras(),
+      tags: user.tags,
     }
 
     result.push(comment)
@@ -47,19 +50,19 @@ function genReplys(num: number, pn: number) {
   for (let i = 0; i < num; i++) {
     const user = users[getRandInt(10)]
 
-    const toUser = users[getRandInt(30)]
+    const at =
+      getRandInt(9) > 4 ? `${users[getRandInt(10)].nickName}` : undefined
 
     const comment: TypeComment = {
-      id: i + 1,
-      userID: user.id,
       nickname: user.nickName,
       avatarUrl: user.avatarUrl,
       content: `测试回复 ${pn}`,
       replyCount: 0,
-      toCommentID: 1,
-      toUserNickname: toUser ? toUser.nickName : '',
       children: [],
       createdAt: '2023-02-19T17:33:27.1343681+08:00',
+      storedData: { id: i + 1, userID: user.id },
+      tags: user.tags,
+      at,
     }
 
     result.push(comment)
@@ -92,19 +95,16 @@ function getReplys(pageNum: number, commentID: number, limitSize = 6) {
   return { data: genReplys(ps, pageNum), total }
 }
 
-function postComment(value: string, toCommenID?: number, toUserID?: number) {
+function postComment(value: string) {
   const user = users[0]
   const comment: TypeComment = {
-    id: getRandInt(1000),
-    userID: user.id,
     nickname: user.nickName,
     avatarUrl: user.avatarUrl,
     content: value,
     replyCount: 0,
-    toCommentID: toCommenID || 0,
-    toUserNickname: toUserID ? users[toUserID - 1].nickName : '',
     children: [],
     createdAt: '2023-02-19T17:33:27.1343681+08:00',
+    extras: extras(),
   }
 
   return comment

@@ -3,6 +3,7 @@ import Pagination from '../components/Pagination/Pagination'
 import { CommentContext } from '../Stores/Config'
 import OneComment from './OneComment/OneComment'
 
+// 整个评论展示区域
 export default function CommentsArea(props: PropsCommentArea) {
   const [currentPage, setCurrPage] = createSignal(1)
   const [comments, setComments] = createSignal<TypeComment[]>([])
@@ -11,7 +12,7 @@ export default function CommentsArea(props: PropsCommentArea) {
     setComments(props.comments)
   })
 
-  const { setLoading } = useContext(CommentContext)
+  const { state, setLoading } = useContext(CommentContext)
   return (
     <div style={{ 'min-height': '10rem' }}>
       <For each={comments()} fallback={<Empty />}>
@@ -20,14 +21,15 @@ export default function CommentsArea(props: PropsCommentArea) {
         }}
       </For>
       <Pagination
+        disabled={state.loading}
         pageCount={props.pageCount}
         currentPage={currentPage()}
         onPagiClick={(pn) => {
           setLoading(true)
           props
-            .onPagiClick(pn, 0)
+            .onPagiClick(pn)
             .then((res) => {
-              if (res.length > 0) {
+              if (res && res.length > 0) {
                 setComments(res)
                 setCurrPage(pn)
               }
@@ -41,6 +43,7 @@ export default function CommentsArea(props: PropsCommentArea) {
   )
 }
 
+// 没有评论时的展示
 function Empty() {
   return (
     <div
@@ -49,7 +52,8 @@ function Empty() {
         height: '5em',
         'justify-content': 'center',
         'align-items': 'center',
-        background: 'var(--simcom-color-textarea-bg)',
+        background: 'var(--simcom-color-border)',
+        opacity: '.5',
       }}
     >
       暂无评论,快来抢沙发吧

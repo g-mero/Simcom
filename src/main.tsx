@@ -102,14 +102,14 @@ function createInst(el: HTMLDivElement) {
       close() {
         setLoading(false)
       },
+      status() {
+        return ConfigStore.loading
+      },
     },
     init,
     setUser(user) {
       if (user) {
-        const newUser = Object.assign(
-          { id: 0, nickname: '未知用户', role: 2 },
-          user,
-        )
+        const newUser = Object.assign({ id: 0, nickname: '', role: 2 }, user)
 
         setConfig((state) => ({
           userOpt: { user: newUser, onLogin: state.userOpt!.onLogin },

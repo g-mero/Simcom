@@ -82,7 +82,7 @@
         main.init({
           userOpt: {
             onLogin() {
-              main.setUser({ id: 1, nickname: 'gmero', role: 1 })
+              main.setUser({ nickname: 'gmero', role: 1 })
             },
           },
         })
@@ -97,21 +97,21 @@
                 editorOpt: {
                   placeHolder: '友善评论哦',
                   maxLength: 200,
-                  onPost: (value, toComment, toUserID) => {
+                  onPost: (value) => {
                     return new Promise((resolve) => {
                       setTimeout(() => {
-                        resolve(postComment(value, toComment, toUserID))
+                        resolve(postComment(value))
                       }, 1000)
                     })
                   },
                 },
                 commentsOpt: {
                   pageCount: Math.ceil(res.total / 8),
-                  onPagiClick: (pn, commentID) => {
-                    if (commentID) {
+                  onPagiClick: (pn, comment) => {
+                    if (comment) {
                       return new Promise((resolve) => {
                         setTimeout(() => {
-                          resolve(getReplys(pn, commentID).data)
+                          resolve(getReplys(pn, comment.storedData.id).data)
                         }, 1000)
                       })
                     } else {

@@ -8,12 +8,13 @@ export default function TextEditor() {
   const [fontCount, setFontCount] = createSignal(0)
   const [value, setValue] = createSignal('')
   const [isPosting, setPosting] = createSignal(false)
+  const [isFocus, setFocus] = createSignal(false)
 
   const { state: GlobalConfig, setComments } = useContext(CommentContext)
 
   // 提交按钮的提示信息
   const titleInfo = () => {
-    if (GlobalConfig.userOpt.user.id > 0) {
+    if (GlobalConfig.userOpt.user.nickname.length > 0) {
       if (value().trim()) {
         return undefined
       } else {
@@ -26,13 +27,21 @@ export default function TextEditor() {
 
   return (
     <div class={styles['text-editor-wrapper']}>
-      <div class={styles['scom-textarea']}>
+      <div
+        class={`${styles['scom-textarea']} ${isFocus() ? styles.focus : ''}`}
+      >
         <textarea
           placeholder={GlobalConfig.editorOpt.placeHolder}
           maxLength={GlobalConfig.editorOpt.maxLength}
           onInput={(ev) => {
             setValue(ev.target.value)
             setFontCount(ev.target.value.length)
+          }}
+          onFocus={() => {
+            setFocus(true)
+          }}
+          onBlur={() => {
+            setFocus(false)
           }}
         />
         <div class={styles['text-tools']}>
@@ -46,14 +55,14 @@ export default function TextEditor() {
       <div class={styles['editor-toolbar']}>
         <div class="color-light">
           <Show
-            when={GlobalConfig.userOpt.user.id > 0}
+            when={GlobalConfig.userOpt.user.nickname.length > 0}
             fallback={<LoginInfo />}
           >
             欢迎你，{GlobalConfig.userOpt.user.nickname}
           </Show>
         </div>
         <div class={styles['btn-group']}>
-          <Show when={!(GlobalConfig.userOpt.user.id > 0)}>
+          <Show when={GlobalConfig.userOpt.user.nickname.length === 0}>
             <ScomButton
               flat={true}
               label="登录"
@@ -119,11 +128,12 @@ export function ReplyTextEditor(props: {
   const [fontCount, setFontCount] = createSignal(0)
   const [value, setValue] = createSignal('')
   const [isPosting, setPosting] = createSignal(false)
+  const [isFocus, setFocus] = createSignal(false)
 
   const { state: GlobalConfig } = useContext(CommentContext)
 
   const titleInfo = () => {
-    if (GlobalConfig.userOpt.user.id > 0) {
+    if (GlobalConfig.userOpt.user.nickname.length > 0) {
       if (value().trim()) {
         return undefined
       } else {
@@ -136,13 +146,21 @@ export function ReplyTextEditor(props: {
 
   return (
     <div class={styles['reply-editor-wrapper']}>
-      <div class={styles['scom-textarea']}>
+      <div
+        class={`${styles['scom-textarea']} ${isFocus() ? styles.focus : ''}`}
+      >
         <textarea
           placeholder={props.placeHolder || GlobalConfig.editorOpt.placeHolder}
           maxLength={GlobalConfig.editorOpt.maxLength}
           onInput={(ev) => {
             setValue(ev.target.value)
             setFontCount(ev.target.value.length)
+          }}
+          onFocus={() => {
+            setFocus(true)
+          }}
+          onBlur={() => {
+            setFocus(false)
           }}
         />
         <div class={styles['text-tools']}>

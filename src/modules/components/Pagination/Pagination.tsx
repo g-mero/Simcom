@@ -6,6 +6,7 @@ export default function Pagination(props: {
   pageCount: number
   currentPage: number
   maxPage?: number
+  disabled?: boolean
   onPagiClick: (pageNum: number) => void
 }) {
   const [pages, setPages] = createSignal<number[]>([])
@@ -40,7 +41,9 @@ export default function Pagination(props: {
   })
   return (
     <Show when={props.pageCount > 1}>
-      <div class={styles.pagination}>
+      <div
+        class={`${styles.pagination} ${props.disabled ? styles.disabled : ''}`}
+      >
         <For each={pages()}>
           {(item) => {
             return (
@@ -56,9 +59,7 @@ export default function Pagination(props: {
                   class={`${styles['pagi-item']} ${
                     props.currentPage === item ? styles.active : ''
                   }`}
-                  onClick={(ev) => {
-                    // 一个简单的css防抖
-                    ev.currentTarget.classList.add(styles.disabled)
+                  onClick={() => {
                     props.onPagiClick(item)
                   }}
                 >

@@ -3,12 +3,13 @@
 $theme-vars: (
   'main': #048de9,
   'main-light': tint-color(#048de9, 30%),
+  'hl-bg': rgba(#048de9, 0.15),
   'textarea-bg': #fafafa,
   'btn-text': #fff,
   'text': #575757,
   'light': #7a7a7a,
   'heavy': #000,
-  'border': #b9b9b9,
+  'border': #e2e2e2,
 );
 
 @mixin base-vars($theme) {
@@ -40,7 +41,7 @@ $theme-vars: (
   }
 
   .simcom-texteditor {
-    margin-bottom: 2rem;
+    margin-bottom: 2em;
   }
 }
 

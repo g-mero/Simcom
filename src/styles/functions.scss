@@ -1,5 +1,5 @@
 $var-prefix: --simcom;
-$color-prefix: #{$var-prefix}-color;
+$color-prefix: #{$var-prefix}-c;
 
 /* 获取变量 */
 @function var-vars($var) {
