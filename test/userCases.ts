@@ -1,7 +1,7 @@
 import { random } from 'lodash-es'
 
 const users: {
-  id: number
+  id: string
   nickName: string
   avatarUrl: string
   tags?: string[]
@@ -26,7 +26,7 @@ function randTags() {
 for (let index = 0; index < 10; index++) {
   const tags = random(0, 1) ? randTags() : undefined
   const user = {
-    id: index + 1,
+    id: (index + 1).toString(),
     nickName: `测试用户 ${index + 1}`,
     avatarUrl: `/test/avatar/(${index + 1}).jpg`,
     tags,

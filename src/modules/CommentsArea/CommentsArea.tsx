@@ -45,15 +45,16 @@ export default function CommentsArea(props: PropsCommentArea) {
 
 // 没有评论时的展示
 function Empty() {
+  const { state } = useContext(CommentContext)
   return (
     <div
       style={{
         display: 'flex',
-        height: '5em',
+        height: '6em',
         'justify-content': 'center',
         'align-items': 'center',
-        background: 'var(--simcom-color-border)',
-        opacity: '.5',
+        opacity: state.loading ? 0 : 0.6,
+        transition: 'all 0.3s',
       }}
     >
       暂无评论,快来抢沙发吧

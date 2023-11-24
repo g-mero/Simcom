@@ -29,6 +29,7 @@ async function genComments(num: number, pn: number) {
     commentsTotal.set(i + 1, replys)
 
     const comment: TypeComment = {
+      userID: user.id,
       nickname: user.nickName,
       avatarUrl: user.avatarUrl,
       content: `${hitokoto} ${pn}`,
@@ -54,6 +55,7 @@ function genReplys(num: number, pn: number) {
       getRandInt(9) > 4 ? `${users[getRandInt(10)].nickName}` : undefined
 
     const comment: TypeComment = {
+      userID: user.id,
       nickname: user.nickName,
       avatarUrl: user.avatarUrl,
       content: `测试回复 ${pn}`,
@@ -98,6 +100,7 @@ function getReplys(pageNum: number, commentID: number, limitSize = 6) {
 function postComment(value: string) {
   const user = users[0]
   const comment: TypeComment = {
+    userID: user.id,
     nickname: user.nickName,
     avatarUrl: user.avatarUrl,
     content: value,

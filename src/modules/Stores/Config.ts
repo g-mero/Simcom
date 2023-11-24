@@ -22,10 +22,11 @@ export function getDefaultConfig() {
       },
     },
     userOpt: {
-      user: { nickname: '', role: 0, avatarUrl: '' },
+      user: { id: '', nickname: '', role: 0, avatarUrl: '' },
       onLogin() {},
       onLogout() {},
     },
+    actionsOpt: {},
     loading: false,
   }
 

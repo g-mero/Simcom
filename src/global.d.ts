@@ -1,14 +1,14 @@
 interface TypeComment {
+  // 评论的可操作用户标识符，用于actionsOpt
+  userID: string
   nickname: string
   avatarUrl: string
   content: string
   at?: string // @的用户昵称
   // 附加数据，渲染到用户名下方
   extras?: string[]
-
   // 用户标签, 渲染到用户名右侧
   tags?: string[]
-
   // likes: number
   // isEdited: boolean
   createdAt: string
@@ -39,6 +39,7 @@ interface PropsCommentArea {
 }
 
 interface TypeUser {
+  id: string
   nickname: string
   avatarUrl: string
   role: number // 1: 博主(同时也是管理员) 2: 注册用户 0: 游客
@@ -49,12 +50,20 @@ interface PropsMain {
   editorOpt: PropsEditor
   userOpt: { user: TypeUser; onLogin: () => void; onLogout: () => void }
   loading: boolean
+  actionsOpt: {
+    onDel?: (comment: TypeComment) => Promise<void>
+    onEdit?: (comment: TypeComment, newConent: string) => Promise<void>
+  }
 }
 
 interface TypeConfig {
   commentsOpt: Partial<PropsCommentArea>
   editorOpt: Partial<PropsEditor>
   userOpt: { user?: TypeUser; onLogin?: () => void; onLogout?: () => void }
+  actionsOpt: {
+    onDel?: (comment: TypeComment) => Promise<void>
+    onEdit?: (comment: TypeComment) => Promise<void>
+  }
 }
 
 interface SimComInst {

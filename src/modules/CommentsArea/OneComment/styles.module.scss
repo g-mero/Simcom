@@ -10,7 +10,6 @@
   .comment-header {
     display: flex;
     justify-content: space-between;
-    margin-top: 0.2em;
     color: var-color('heavy');
 
     .tag {
@@ -31,7 +30,6 @@
 
   .comment-extras {
     display: flex;
-    margin-bottom: 5px;
 
     >span {
       padding: 0 5px;
@@ -53,13 +51,13 @@
   }
 
   .comment-child {
-    padding: 0;
+    margin-top: 1em;
   }
 }
 
 .one-comment {
   display: flex;
-  padding: 0.5rem;
+  margin-bottom: 1em;
 }
 
 .color-highlight {
@@ -68,8 +66,9 @@
 
 .avatar {
   img {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.8em;
+    height: 2.8em;
+    margin-top: -.2em;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjYzVjNWM1IiBkPSJNMCAwaDI1NnYyNTZIMHoiLz48Y2lyY2xlIGN4PSIxMjcuNzUiIGN5PSIxMDkuNSIgcj0iNTYuNSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0yMjcuNTMgMjU2SDI4LjQ3YzMuMTMtNDAuNSAyMS45OC03NS4zMSA0OC45LTk0Ljk2YTMuNzQgMy43NCAwIDAgMSA0LjguMzIgNjUuMzYxIDY1LjM2MSAwIDAgMCA5MS4yMS0uMyAzLjc0MiAzLjc0MiAwIDAgMSA0LjgtLjM1YzI3LjE1IDE5LjU4IDQ2LjIgNTQuNTYgNDkuMzUgOTUuMjl6IiBmaWxsPSIjZmZmIi8+PC9zdmc+');
     background-repeat: no-repeat;
     border-radius: 50%;
@@ -96,13 +95,15 @@
 
 .one-reply {
   display: flex;
-  justify-content: space-between;
-  padding: 0.2rem;
+  flex-direction: column;
+  margin-top: .4em;
 
   .avatar {
     img {
-      width: 2rem;
-      height: 2rem;
+      width: 2em;
+      height: 2em;
+      margin-top: -.1em;
+      margin-left: -.8em;
     }
   }
 
@@ -134,7 +135,6 @@
 
 .reply-wrapper {
   position: relative;
-  margin-top: 5px;
 
   &.loading {
     > .one-reply {

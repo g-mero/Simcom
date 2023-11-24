@@ -54,20 +54,7 @@ export default function TextEditor() {
 
       <div class={styles['editor-toolbar']}>
         <div class="color-light">
-          <Show
-            when={GlobalConfig.userOpt.user.nickname.length > 0}
-            fallback={<LoginInfo />}
-          >
-            欢迎你，
-            <span
-              class={styles['click-text']}
-              onClick={() => {
-                GlobalConfig.userOpt.onLogout()
-              }}
-            >
-              {GlobalConfig.userOpt.user.nickname}
-            </span>
-          </Show>
+          <LoginInfo />
         </div>
         <div class={styles['btn-group']}>
           <Show when={GlobalConfig.userOpt.user.nickname.length === 0}>
@@ -114,16 +101,22 @@ export default function TextEditor() {
 function LoginInfo() {
   const { state: GlobalConfig } = useContext(CommentContext)
 
+  const isAuthed = () => GlobalConfig.userOpt.user.nickname.length > 0
+
   return (
     <>
-      <span>您还没有登录，请</span>
+      <span>{isAuthed() ? '欢迎你，' : '您还没有登录，请'}</span>
       <span
         class={styles['click-text']}
         onClick={() => {
+          if (isAuthed()) {
+            GlobalConfig.userOpt.onLogout()
+            return
+          }
           GlobalConfig.userOpt.onLogin()
         }}
       >
-        登录
+        {isAuthed() ? GlobalConfig.userOpt.user.nickname : '登录'}
       </span>
     </>
   )
@@ -131,6 +124,8 @@ function LoginInfo() {
 
 export function ReplyTextEditor(props: {
   placeHolder?: string
+  value?: string
+  label?: string
   onPost: (value: string) => Promise<void>
 }) {
   const [fontCount, setFontCount] = createSignal(0)
@@ -160,6 +155,7 @@ export function ReplyTextEditor(props: {
         <textarea
           placeholder={props.placeHolder || GlobalConfig.editorOpt.placeHolder}
           maxLength={GlobalConfig.editorOpt.maxLength}
+          value={props.value}
           onInput={(ev) => {
             setValue(ev.target.value)
             setFontCount(ev.target.value.length)
@@ -181,7 +177,7 @@ export function ReplyTextEditor(props: {
 
       <div class={styles['send-btn']}>
         <ScomButton
-          label="回复"
+          label={props.label || '回复'}
           title={titleInfo()}
           loading={isPosting()}
           type="primary"

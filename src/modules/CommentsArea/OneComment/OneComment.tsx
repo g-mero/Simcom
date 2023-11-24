@@ -1,6 +1,5 @@
 /* eslint-disable solid/no-innerhtml */
-/* eslint-disable unicorn/prefer-add-event-listener */
-/* eslint-disable solid/event-handlers */
+
 import {
   For,
   Show,
@@ -14,35 +13,14 @@ import { CommentContext } from '../../Stores/Config'
 import { timeFormat, timePast } from '../../../utils/timeUtils'
 import Pagination from '../../components/Pagination/Pagination'
 import ScomButton from '../../components/SCButton/ScomButton'
-import { ReplyTextEditor } from '../../textEditor/TextEditor'
 import Loading from '../../components/Loading/Loading'
 import styles from './styles.module.scss'
-
-function ReplyEditor(props: {
-  show: boolean
-  placeHolder?: string
-  onPost: (value: string) => Promise<any>
-}) {
-  return (
-    <div class={`${styles['open-wrapper']} ${props.show ? styles.open : ''}`}>
-      <Show when={props.show}>
-        <ReplyTextEditor
-          placeHolder={props.placeHolder}
-          onPost={(value) => {
-            return props.onPost(value)
-          }}
-        />
-      </Show>
-    </div>
-  )
-}
+import Avatar from './Avatar'
+import OneReply from './OneReply'
+import ReplyEditor from './ReplyEditor'
 
 // 实现互斥的回复框
 const [replyID, setReplyID] = createSignal('')
-
-const defaultAvatar =
-  'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjYzVjNWM1IiBkPSJNMCAwaDI1NnYyNTZIMHoiLz48Y2lyY2xlIGN4PSIxMjcuNzUiIGN5PSIxMDkuNSIgcj0iNTYuNSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0yMjcuNTMgMjU2SDI4LjQ3YzMuMTMtNDAuNSAyMS45OC03NS4zMSA0OC45LTk0Ljk2YTMuNzQgMy43NCAwIDAgMSA0LjguMzIgNjUuMzYxIDY1LjM2MSAwIDAgMCA5MS4yMS0uMyAzLjc0MiAzLjc0MiAwIDAgMSA0LjgtLjM1YzI3LjE1IDE5LjU4IDQ2LjIgNTQuNTYgNDkuMzUgOTUuMjl6IiBmaWxsPSIjZmZmIi8+PC9zdmc+'
-
 // 核心
 export default function OneComment(props: PropsOneComment) {
   const [replys, setReplys] = createSignal<TypeComment[]>([])
@@ -51,24 +29,22 @@ export default function OneComment(props: PropsOneComment) {
 
   const isAuthed = () => GlobalConfig.userOpt.user.nickname.length > 0
 
+  const [isProcessing, setIsProcessing] = createSignal(false)
+
+  const canActions = () => {
+    return (
+      GlobalConfig.userOpt.user.id === props.comment.userID ||
+      GlobalConfig.userOpt.user.role === 1
+    )
+  }
+
   createEffect(() => {
     setReplys(props.comment.children)
   })
   const id = createUniqueId()
   return (
     <div class={`${styles['one-comment']} ${styles['fade-in']}`}>
-      <div class={styles.avatar}>
-        <img
-          src={props.comment.avatarUrl || defaultAvatar}
-          elementtiming={''}
-          fetchpriority={'high'}
-          alt="avatar"
-          onerror={(e) => {
-            e.currentTarget.src = defaultAvatar
-            e.currentTarget.onerror = null
-          }}
-        />
-      </div>
+      <Avatar avatarUrl={props.comment.avatarUrl} />
       <div class={styles['comment-main']}>
         <div class={styles['comment-header']}>
           <div>
@@ -92,8 +68,22 @@ export default function OneComment(props: PropsOneComment) {
           </div>
 
           <div class={styles.option}>
+            <Show when={canActions() && GlobalConfig.actionsOpt.onDel}>
+              <ScomButton
+                icon="delete"
+                onClick={() => {
+                  setIsProcessing(true)
+                  GlobalConfig.actionsOpt.onDel!(props.comment).finally(() => {
+                    setIsProcessing(false)
+                  })
+                }}
+                text
+                disabled={isProcessing()}
+                title={'删除'}
+              />
+            </Show>
             <ScomButton
-              icon="majesticons:comment-line"
+              icon="comment"
               onClick={() => {
                 if (!isAuthed() || replyID() === id) {
                   setReplyID('')
@@ -198,6 +188,8 @@ function RenderReplys(props: {
                 onPost={(value) => {
                   return props.onPost(value, item)
                 }}
+                replyID={replyID}
+                setReplyID={setReplyID}
               />
             )
           }}
@@ -253,92 +245,5 @@ function RenderReplys(props: {
         </div>
       </Show>
     </>
-  )
-}
-
-// 一条回复
-function OneReply(
-  props: Omit<PropsOneComment, 'onPagiClick'> & {
-    onPost: (value: string) => Promise<boolean>
-  },
-) {
-  const { state: GlobalConfig } = useContext(CommentContext)
-  const id = createUniqueId()
-  const isAuthed = () => GlobalConfig.userOpt.user.nickname.length > 0
-  return (
-    <div class={`${styles['one-reply']} ${styles['fade-in']}`}>
-      <div class={styles['reply-main']}>
-        <div class={styles.avatar}>
-          <img
-            src={props.comment.avatarUrl || defaultAvatar}
-            elementtiming={''}
-            fetchpriority={'high'}
-            alt="avatar"
-            onerror={(e) => {
-              e.currentTarget.src = defaultAvatar
-              e.currentTarget.onerror = null
-            }}
-          />
-        </div>
-        <div style={{ flex: 1 }}>
-          <div class={styles['comment-header']}>
-            <div>
-              <div class={styles['color-highlight']}>
-                {props.comment.nickname}
-              </div>
-              <For each={props.comment.tags}>
-                {(item) => {
-                  return <span class={styles.tag}>{item}</span>
-                }}
-              </For>
-              <Show when={props.comment.at}>
-                <span
-                  class={styles['light-text']}
-                  style={{ 'margin-left': '.25em' }}
-                >
-                  @{props.comment.at}
-                </span>
-              </Show>
-            </div>
-            <div
-              class={`${styles.option} ${
-                replyID() === id ? styles.active : ''
-              }`}
-            >
-              <span class={styles['light-text']}>
-                {timePast(props.comment.createdAt)}
-              </span>
-              <ScomButton
-                icon="majesticons:comment-line"
-                onClick={() => {
-                  if (!isAuthed() || replyID() === id) {
-                    setReplyID('')
-                    return
-                  }
-                  setReplyID(id)
-                }}
-                text
-                active={replyID() === id}
-                disabled={!isAuthed()}
-                title={isAuthed() ? undefined : '请先登录'}
-              />
-            </div>
-          </div>
-          <div
-            class={styles['comment-content']}
-            innerHTML={props.comment.content}
-          />
-          <ReplyEditor
-            show={replyID() === id}
-            placeHolder={'撰写回复'}
-            onPost={(value) => {
-              return props.onPost(value).then((res) => {
-                res && setReplyID('')
-              })
-            }}
-          />
-        </div>
-      </div>
-    </div>
   )
 }

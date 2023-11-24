@@ -72,6 +72,9 @@
             onLogin() {
               maind.setUser({ id: 2, nickname: 'test2', role: 1 })
             },
+            onLogout() {
+              maind.setUser()
+            },
           },
         })
       }
@@ -82,9 +85,30 @@
         main.init({
           userOpt: {
             onLogin() {
-              main.setUser({ nickname: 'gmero', role: 1 })
+              main.setUser({ id: '1', nickname: 'gmero', role: 1 })
+            },
+            onLogout() {
+              main.setUser()
             },
           },
+          actionsOpt: {
+            onDel(comment) {
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  console.log('del',comment.content);
+                  resolve(true)
+                }, 1000)
+              })
+            },
+            onEdit(comment) {
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  console.log('edit',comment.content);
+                  resolve(true)
+                }, 1000)
+              })
+            },
+          }
         })
 
         main.loading.start()

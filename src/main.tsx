@@ -69,6 +69,16 @@ function createInst(el: HTMLDivElement) {
           } as PropsEditor,
         }))
       }
+
+      if (opt.actionsOpt) {
+        const actionsOpt = opt.actionsOpt
+        setConfig((state) => ({
+          actionsOpt: {
+            onDel: actionsOpt.onDel || state.actionsOpt.onDel,
+            onEdit: actionsOpt.onEdit || state.actionsOpt.onEdit,
+          },
+        }))
+      }
     }
   }
 
@@ -110,7 +120,10 @@ function createInst(el: HTMLDivElement) {
     init,
     setUser(user) {
       if (user) {
-        const newUser = Object.assign({ id: 0, nickname: '', role: 2 }, user)
+        const newUser = Object.assign(
+          { id: '', avatarUrl: '', nickname: '', role: 2 },
+          user,
+        )
 
         setConfig((state) => ({
           userOpt: {
@@ -119,6 +132,8 @@ function createInst(el: HTMLDivElement) {
             onLogout: state.userOpt!.onLogout,
           },
         }))
+      } else {
+        this.setUser({} as TypeUser)
       }
     },
     setData(data) {
