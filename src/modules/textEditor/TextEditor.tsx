@@ -58,7 +58,15 @@ export default function TextEditor() {
             when={GlobalConfig.userOpt.user.nickname.length > 0}
             fallback={<LoginInfo />}
           >
-            欢迎你，{GlobalConfig.userOpt.user.nickname}
+            欢迎你，
+            <span
+              class={styles['click-text']}
+              onClick={() => {
+                GlobalConfig.userOpt.onLogout()
+              }}
+            >
+              {GlobalConfig.userOpt.user.nickname}
+            </span>
           </Show>
         </div>
         <div class={styles['btn-group']}>

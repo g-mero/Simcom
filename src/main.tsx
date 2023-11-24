@@ -54,6 +54,7 @@ function createInst(el: HTMLDivElement) {
           userOpt: {
             user: userOpt.user || state.userOpt.user,
             onLogin: userOpt.onLogin || state.userOpt.onLogin,
+            onLogout: userOpt.onLogout || state.userOpt.onLogout,
           },
         }))
       }
@@ -112,7 +113,11 @@ function createInst(el: HTMLDivElement) {
         const newUser = Object.assign({ id: 0, nickname: '', role: 2 }, user)
 
         setConfig((state) => ({
-          userOpt: { user: newUser, onLogin: state.userOpt!.onLogin },
+          userOpt: {
+            user: newUser,
+            onLogin: state.userOpt!.onLogin,
+            onLogout: state.userOpt!.onLogout,
+          },
         }))
       }
     },

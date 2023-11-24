@@ -71,10 +71,10 @@ export default function OneComment(props: PropsOneComment) {
       </div>
       <div class={styles['comment-main']}>
         <div class={styles['comment-header']}>
-          <div style={{ display: 'flex', 'align-items': 'center' }}>
+          <div>
             <div
               class={styles['color-highlight']}
-              style={{ 'font-size': '1.15em', 'font-weight': 'bold' }}
+              style={{ 'font-size': '1.2em', 'font-weight': 'bold' }}
             >
               {props.comment.nickname}
             </div>

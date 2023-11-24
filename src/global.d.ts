@@ -47,14 +47,14 @@ interface TypeUser {
 interface PropsMain {
   commentsOpt: PropsCommentArea
   editorOpt: PropsEditor
-  userOpt: { user: TypeUser; onLogin: () => void }
+  userOpt: { user: TypeUser; onLogin: () => void; onLogout: () => void }
   loading: boolean
 }
 
 interface TypeConfig {
   commentsOpt: Partial<PropsCommentArea>
   editorOpt: Partial<PropsEditor>
-  userOpt: { user?: TypeUser; onLogin?: () => void }
+  userOpt: { user?: TypeUser; onLogin?: () => void; onLogout?: () => void }
 }
 
 interface SimComInst {

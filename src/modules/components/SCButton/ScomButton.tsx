@@ -24,9 +24,9 @@ function Button(props: {
       type="button"
       title={props.title}
       onClick={(ev) => {
-        if (props.onClick) {
-          props.onClick(ev)
-        }
+        // 防止重复点击
+        if (props.disabled || props.loading) return
+        props.onClick && props.onClick(ev)
       }}
     >
       <Show when={props.icon} fallback={<span>{props.label}</span>}>

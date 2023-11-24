@@ -24,6 +24,7 @@ export function getDefaultConfig() {
     userOpt: {
       user: { nickname: '', role: 0, avatarUrl: '' },
       onLogin() {},
+      onLogout() {},
     },
     loading: false,
   }

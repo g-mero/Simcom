@@ -57,8 +57,7 @@
     }
   }
 
-  &:hover,
-  &.disabled {
+  &:hover,&.disabled,&.loading {
     background-color: var-color('main-light');
   }
 
