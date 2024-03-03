@@ -13,7 +13,7 @@ import type {
   TypeUser,
 } from './type'
 
-export type {}
+export type { TypeComment, TypeUser }
 
 export default function SimCom(el: HTMLDivElement) {
   return createInst(el)
