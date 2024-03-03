@@ -1,4 +1,5 @@
 import { createContext } from 'solid-js'
+import type { PropsMain, TypeComment } from '../../type'
 
 // 获取默认初始化设置项，这里使用函数形式是为了放在对象的引用问题，导致组件复用出现干涉
 export function getDefaultConfig() {

@@ -1,4 +1,4 @@
-interface TypeComment {
+export interface TypeComment {
   // 评论的可操作用户标识符，用于actionsOpt
   userID: string
   nickname: string
@@ -11,13 +11,13 @@ interface TypeComment {
   tags?: string[]
   // likes: number
   // isEdited: boolean
-  createdAt: string
+  createdAt: string | number | Date
   replyCount: number // 回复总数
   children: TypeComment[] // 回复
   storedData?: any // 保存的数据
 }
 
-interface PropsEditor {
+export interface PropsEditor {
   placeHolder: string
   maxLength: number
   onPost: (
@@ -27,25 +27,25 @@ interface PropsEditor {
   ) => Promise<TypeComment | null>
 }
 
-interface PropsOneComment {
+export interface PropsOneComment {
   comment: TypeComment
   onPagiClick: (pn: number, rootComment: TypeComment) => Promise<TypeComment[]>
 }
 
-interface PropsCommentArea {
+export interface PropsCommentArea {
   comments: TypeComment[]
   pageCount: number
   onPagiClick: (pn: number, rootComment?: TypeComment) => Promise<TypeComment[]>
 }
 
-interface TypeUser {
+export interface TypeUser {
   id: string
   nickname: string
   avatarUrl: string
   role: number // 1: 博主(同时也是管理员) 2: 注册用户 0: 游客
 }
 
-interface PropsMain {
+export interface PropsMain {
   commentsOpt: PropsCommentArea
   editorOpt: PropsEditor
   userOpt: { user: TypeUser; onLogin: () => void; onLogout: () => void }
@@ -56,7 +56,7 @@ interface PropsMain {
   }
 }
 
-interface TypeConfig {
+export interface TypeConfig {
   commentsOpt: Partial<PropsCommentArea>
   editorOpt: Partial<PropsEditor>
   userOpt: { user?: TypeUser; onLogin?: () => void; onLogout?: () => void }
@@ -66,7 +66,7 @@ interface TypeConfig {
   }
 }
 
-interface SimComInst {
+export interface SimComInst {
   loading: {
     start: () => void
     close: () => void

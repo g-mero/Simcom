@@ -1,4 +1,4 @@
-export function timePast(time: string): string {
+export function timePast(time: string | number | Date): string {
   const past = new Date(time)
   const now = new Date(Date.now())
 
@@ -19,7 +19,7 @@ export function timePast(time: string): string {
   return '刚刚'
 }
 
-export function timeFormat(time: string): string {
+export function timeFormat(time: string | number | Date): string {
   const date = new Date(time)
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
 }

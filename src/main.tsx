@@ -4,6 +4,16 @@ import { render } from 'solid-js/web'
 
 import App from './App'
 import { CommentContext, getDefaultConfig } from './modules/Stores/Config'
+import type {
+  PropsCommentArea,
+  PropsEditor,
+  SimComInst,
+  TypeComment,
+  TypeConfig,
+  TypeUser,
+} from './type'
+
+export type {}
 
 export default function SimCom(el: HTMLDivElement) {
   return createInst(el)
