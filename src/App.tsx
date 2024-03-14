@@ -1,12 +1,11 @@
 import { Show, useContext } from 'solid-js'
-import { CommentContext } from './modules/Stores/Config'
+import { CommentContext } from './controllers/Config'
 import CommentsArea from './modules/CommentsArea/CommentsArea'
-import Loading from './modules/components/Loading/Loading'
+import styles from './styles/main.module.scss'
 import TextEditor from './modules/textEditor/TextEditor'
+import Loading from '@/components/Loading/Loading'
 
 import './styles/global.scss'
-
-import styles from './styles/main.module.scss'
 
 const App = (props: { loading?: boolean }) => {
   const { state: GlobalConfig } = useContext(CommentContext)

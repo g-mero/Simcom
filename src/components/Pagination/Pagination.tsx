@@ -1,6 +1,9 @@
-import { range } from 'lodash-es'
 import { For, Show, createEffect, createSignal } from 'solid-js'
-import styles from './Pagination.module.scss'
+import styles from '@/styles/components/pagination.module.scss'
+
+function range(start: number, stop: number) {
+  return Array.from({ length: stop - start }, (_value, index) => start + index)
+}
 
 export default function Pagination(props: {
   pageCount: number

@@ -64,20 +64,6 @@
   color: var-color('main');
 }
 
-.avatar {
-  img {
-    width: 2.8em;
-    height: 2.8em;
-    margin-top: -.2em;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cGF0aCBmaWxsPSIjYzVjNWM1IiBkPSJNMCAwaDI1NnYyNTZIMHoiLz48Y2lyY2xlIGN4PSIxMjcuNzUiIGN5PSIxMDkuNSIgcj0iNTYuNSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0yMjcuNTMgMjU2SDI4LjQ3YzMuMTMtNDAuNSAyMS45OC03NS4zMSA0OC45LTk0Ljk2YTMuNzQgMy43NCAwIDAgMSA0LjguMzIgNjUuMzYxIDY1LjM2MSAwIDAgMCA5MS4yMS0uMyAzLjc0MiAzLjc0MiAwIDAgMSA0LjgtLjM1YzI3LjE1IDE5LjU4IDQ2LjIgNTQuNTYgNDkuMzUgOTUuMjl6IiBmaWxsPSIjZmZmIi8+PC9zdmc+');
-    background-repeat: no-repeat;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  margin-right: 0.4em;
-}
-
 .light-text {
   font-size: 0.875em;
   opacity: 0.7;
@@ -97,25 +83,6 @@
   display: flex;
   flex-direction: column;
   margin-top: .4em;
-
-  .avatar {
-    img {
-      width: 2em;
-      height: 2em;
-      margin-top: -.1em;
-      margin-left: -.8em;
-    }
-  }
-
-  .comment-content {
-    min-height: 2em;
-    padding-top: 0.3em;
-  }
-
-  .reply-main {
-    display: flex;
-    flex: 1;
-  }
 
   .option {
     opacity: 0;

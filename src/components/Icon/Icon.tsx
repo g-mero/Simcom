@@ -1,8 +1,17 @@
 import type { JSX } from 'solid-js/jsx-runtime'
-import styles from './icon.module.scss'
 
 export default function Icon(props: { icon: string; width?: string }) {
-  return <div class={styles.icon}>{getIcon(props.icon, props.width)}</div>
+  return (
+    <div
+      style={{
+        display: 'inline-flex',
+        'margin-right': '3px',
+        'pointer-events': 'none',
+      }}
+    >
+      {getIcon(props.icon, props.width)}
+    </div>
+  )
 }
 
 function getIcon(icon: string, width = '1em') {

@@ -9,16 +9,16 @@ import {
   useContext,
 } from 'solid-js'
 
-import { CommentContext } from '../../Stores/Config'
-import { timeFormat, timePast } from '../../../utils/timeUtils'
-import Pagination from '../../components/Pagination/Pagination'
-import ScomButton from '../../components/SCButton/ScomButton'
-import Loading from '../../components/Loading/Loading'
-import type { PropsOneComment, TypeComment } from '../../../type'
 import styles from './styles.module.scss'
-import Avatar from './Avatar'
 import OneReply from './OneReply'
 import ReplyEditor from './ReplyEditor'
+import { CommentContext } from '@/controllers/Config'
+import { timeFormat, timePast } from '@/utils/timeUtils'
+import Pagination from '@/components/Pagination/Pagination'
+import ScomButton from '@/components/SCButton/ScomButton'
+import Loading from '@/components/Loading/Loading'
+import type { PropsOneComment, TypeComment } from '@/type'
+import Avatar from '@/components/Avatar'
 
 // 实现互斥的回复框
 const [replyID, setReplyID] = createSignal('')
@@ -28,14 +28,14 @@ export default function OneComment(props: PropsOneComment) {
 
   const { state: GlobalConfig } = useContext(CommentContext)
 
-  const isAuthed = () => GlobalConfig.userOpt.user.nickname.length > 0
+  const isAuthed = () => !!GlobalConfig.userOpt.user?.nickname
 
   const [isProcessing, setIsProcessing] = createSignal(false)
 
   const canActions = () => {
     return (
-      GlobalConfig.userOpt.user.id === props.comment.userID ||
-      GlobalConfig.userOpt.user.role === 1
+      GlobalConfig.userOpt.user?.id === props.comment.userID ||
+      GlobalConfig.userOpt.user?.role === 1
     )
   }
 
@@ -45,7 +45,10 @@ export default function OneComment(props: PropsOneComment) {
   const id = createUniqueId()
   return (
     <div class={`${styles['one-comment']} ${styles['fade-in']}`}>
-      <Avatar avatarUrl={props.comment.avatarUrl} />
+      <Avatar
+        avatarUrl={props.comment.avatarUrl}
+        style={{ 'margin-right': '.4em' }}
+      />
       <div class={styles['comment-main']}>
         <div class={styles['comment-header']}>
           <div>
@@ -96,7 +99,7 @@ export default function OneComment(props: PropsOneComment) {
               text
               active={replyID() === id}
               disabled={!isAuthed()}
-              title={isAuthed() ? undefined : '请先登录'}
+              title={isAuthed() ? undefined : '请先完善用户信息'}
             />
           </div>
         </div>
@@ -189,7 +192,7 @@ function RenderReplys(props: {
                 onPost={(value) => {
                   return props.onPost(value, item)
                 }}
-                replyID={replyID}
+                replyID={replyID()}
                 setReplyID={setReplyID}
               />
             )
@@ -197,8 +200,13 @@ function RenderReplys(props: {
         </For>
       </div>
 
-      <Show when={props.total > props.replys.length && !showall()}>
-        <div class={styles['light-text']}>
+      <div
+        class={styles['light-text']}
+        style={{
+          'margin-top': '.5em',
+        }}
+      >
+        <Show when={props.total > props.replys.length && !showall()}>
           <span>共有{props.total}条评论，</span>
           <span
             class={styles['click-text']}
@@ -222,11 +230,9 @@ function RenderReplys(props: {
           >
             查看全部
           </span>
-        </div>
-      </Show>
-      {/* 分页 */}
-      <Show when={showall()}>
-        <div class={styles['light-text']}>
+        </Show>
+        {/* 分页 */}
+        <Show when={showall()}>
           <Pagination
             disabled={loading()}
             pageCount={pageCount()}
@@ -243,8 +249,8 @@ function RenderReplys(props: {
                 })
             }}
           />
-        </div>
-      </Show>
+        </Show>
+      </div>
     </>
   )
 }

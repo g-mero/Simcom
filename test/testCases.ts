@@ -1,10 +1,10 @@
+import type { TypeComment } from '../src/main'
 import { users } from './userCases'
 
-async function fetchOneWord() {
-  const res = await fetch('https://v1.hitokoto.cn')
-  const { hitokoto } = await res.json()
+function fetchOneWord() {
+  const time = Date.now()
 
-  return hitokoto
+  return `评论${time}`
 }
 
 function extras() {

@@ -1,0 +1,52 @@
+@import '../functions';
+
+.text-field-wrapper {
+    padding: .5em .8em;
+    border: 1px solid var-color('border');
+    border-radius: 5px;
+
+    &.focus {
+        border-color: var-color('main');
+    }
+
+    input, textarea {
+        width: 100%;
+        background: none;
+        border: none;
+        outline-style: none;
+
+        &::placeholder {
+            opacity: 0.5;
+        }
+    }
+}
+
+.textarea-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .textarea-tools {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.875em;
+    }
+
+    textarea {
+        resize: none;
+
+        /* 滚动条 */
+        &::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+  
+        &::-webkit-scrollbar-thumb {
+            background-color: rgb(144 147 153 / 30%);
+            border-radius: 8px;
+        }
+  
+        &::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+    }
+} 

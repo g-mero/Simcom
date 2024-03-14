@@ -1,3 +1,5 @@
+// @ts-expect-error 'xx'
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import solidPlugin from 'vite-plugin-solid'
 import dts from 'vite-plugin-dts'
@@ -22,6 +24,11 @@ export default defineConfig((env) => {
         },
       }),
     ],
+    resolve: {
+      alias: {
+        '@': resolve('src'),
+      },
+    },
     server: {
       port: 3000,
     },

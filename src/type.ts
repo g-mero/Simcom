@@ -17,6 +17,8 @@ export interface TypeComment {
   storedData?: any // 保存的数据
 }
 
+export type UserState = 'login_user' | 'none' | 'normal_user' | undefined
+
 export interface PropsEditor {
   placeHolder: string
   maxLength: number
@@ -42,13 +44,14 @@ export interface TypeUser {
   id: string
   nickname: string
   avatarUrl: string
+  email: string
   role: number // 1: 博主(同时也是管理员) 2: 注册用户 0: 游客
 }
 
 export interface PropsMain {
   commentsOpt: PropsCommentArea
   editorOpt: PropsEditor
-  userOpt: { user: TypeUser; onLogin: () => void; onLogout: () => void }
+  userOpt: { user?: TypeUser; onLogin?: () => void; onLogout?: () => void }
   loading: boolean
   actionsOpt: {
     onDel?: (comment: TypeComment) => Promise<void>

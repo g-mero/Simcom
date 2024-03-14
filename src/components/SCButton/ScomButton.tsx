@@ -1,7 +1,7 @@
 import { type JSX, Show } from 'solid-js'
 
 import Icon from '../Icon/Icon'
-import styles from './styles.module.scss'
+import styles from '@/styles/components/scbutton.module.scss'
 
 function Button(props: {
   label?: string
@@ -13,6 +13,7 @@ function Button(props: {
   active?: boolean
   disabled?: boolean
   loading?: boolean
+  style?: string | JSX.CSSProperties
 }) {
   return (
     <button
@@ -23,6 +24,7 @@ function Button(props: {
       }  `}
       type="button"
       title={props.title}
+      style={props.style}
       onClick={(ev) => {
         // 防止重复点击
         if (props.disabled || props.loading) return
@@ -50,6 +52,7 @@ export default function ScomButton(props: {
   active?: boolean
   disabled?: boolean
   loading?: boolean
+  style?: string | JSX.CSSProperties
 }) {
   return (
     <>

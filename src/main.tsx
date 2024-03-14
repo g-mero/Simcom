@@ -3,15 +3,9 @@ import { createStore } from 'solid-js/store'
 import { render } from 'solid-js/web'
 
 import App from './App'
-import { CommentContext, getDefaultConfig } from './modules/Stores/Config'
-import type {
-  PropsCommentArea,
-  PropsEditor,
-  SimComInst,
-  TypeComment,
-  TypeConfig,
-  TypeUser,
-} from './type'
+import { CommentContext, getDefaultConfig } from './controllers/Config'
+import type { SimComInst, TypeComment, TypeConfig, TypeUser } from './type'
+import { validateUser } from './controllers/validator'
 
 export type { TypeComment, TypeUser }
 
@@ -20,24 +14,17 @@ export default function SimCom(el: HTMLDivElement) {
 }
 
 function createInst(el: HTMLDivElement) {
-  const [ConfigStore, setConfig] = createStore(getDefaultConfig())
+  const [configStore, setConfigStore] = createStore(getDefaultConfig())
   const setComments = (setFunc: (prev: TypeComment[]) => TypeComment[]) => {
-    const prev = ConfigStore.commentsOpt.comments
+    const prev = configStore.commentsOpt.comments
 
     const newCmt = setFunc([...prev])
 
-    setConfig((state) => ({
-      commentsOpt: {
-        comments: newCmt,
-        onPagiClick: state.commentsOpt.onPagiClick,
-        pageCount: state.commentsOpt.pageCount,
-      },
-    }))
+    setConfigStore('commentsOpt', { comments: newCmt })
   }
+
   const setLoading = (bool: boolean) => {
-    setConfig(() => ({
-      loading: bool,
-    }))
+    setConfigStore('loading', bool)
   }
 
   // prevent reduplicate
@@ -45,51 +32,18 @@ function createInst(el: HTMLDivElement) {
 
   // config
   const config = (opt: Partial<TypeConfig>) => {
-    if (opt) {
-      if (opt.commentsOpt) {
-        const commentsOpt = opt.commentsOpt
-        setConfig((state) => ({
-          commentsOpt: {
-            comments: commentsOpt.comments || state.commentsOpt.comments,
-            onPagiClick:
-              commentsOpt.onPagiClick || state.commentsOpt.onPagiClick,
-            pageCount: commentsOpt.pageCount || state.commentsOpt.pageCount,
-          } as PropsCommentArea,
-        }))
-      }
+    opt.commentsOpt && setConfigStore('commentsOpt', { ...opt.commentsOpt })
+    opt.userOpt && setConfigStore('userOpt', { ...opt.userOpt })
+    opt.editorOpt && setConfigStore('editorOpt', { ...opt.editorOpt })
+    opt.actionsOpt && setConfigStore('actionsOpt', { ...opt.actionsOpt })
+  }
 
-      if (opt.userOpt) {
-        const userOpt = opt.userOpt
-        setConfig((state) => ({
-          userOpt: {
-            user: userOpt.user || state.userOpt.user,
-            onLogin: userOpt.onLogin || state.userOpt.onLogin,
-            onLogout: userOpt.onLogout || state.userOpt.onLogout,
-          },
-        }))
-      }
-
-      if (opt.editorOpt) {
-        const editorOpt = opt.editorOpt
-        setConfig((state) => ({
-          editorOpt: {
-            placeHolder: editorOpt.placeHolder || state.editorOpt.placeHolder,
-            maxLength: editorOpt.maxLength || state.editorOpt.maxLength,
-            onPost: editorOpt.onPost || state.editorOpt.onPost,
-          } as PropsEditor,
-        }))
-      }
-
-      if (opt.actionsOpt) {
-        const actionsOpt = opt.actionsOpt
-        setConfig((state) => ({
-          actionsOpt: {
-            onDel: actionsOpt.onDel || state.actionsOpt.onDel,
-            onEdit: actionsOpt.onEdit || state.actionsOpt.onEdit,
-          },
-        }))
-      }
-    }
+  const setUser = (user?: Partial<TypeUser>) => {
+    const newUser = Object.assign(
+      { id: '', avatarUrl: '', nickname: '', role: 2, email: '' },
+      user,
+    )
+    config({ userOpt: { user: newUser } })
   }
 
   // 初始化，挂载到dom
@@ -106,9 +60,24 @@ function createInst(el: HTMLDivElement) {
     render(
       () => (
         <CommentContext.Provider
-          value={{ state: ConfigStore, setComments, setLoading }}
+          value={{
+            state: configStore,
+            setComments,
+            setLoading,
+            userState: () => {
+              const { user } = configStore.userOpt
+              if (!user) return 'none'
+              if (user.id) {
+                return 'login_user'
+              } else if (validateUser(user)) {
+                return 'normal_user'
+              }
+              return 'none'
+            },
+            setUser,
+          }}
         >
-          <App loading={ConfigStore.loading} />
+          <App loading={configStore.loading} />
         </CommentContext.Provider>
       ),
       el,
@@ -124,45 +93,15 @@ function createInst(el: HTMLDivElement) {
         setLoading(false)
       },
       status() {
-        return ConfigStore.loading
+        return configStore.loading
       },
     },
     init,
-    setUser(user) {
-      if (user) {
-        const newUser = Object.assign(
-          { id: '', avatarUrl: '', nickname: '', role: 2 },
-          user,
-        )
-
-        setConfig((state) => ({
-          userOpt: {
-            user: newUser,
-            onLogin: state.userOpt!.onLogin,
-            onLogout: state.userOpt!.onLogout,
-          },
-        }))
-      } else {
-        this.setUser({} as TypeUser)
-      }
-    },
+    setUser,
     setData(data) {
       if (data) {
-        setConfig((state) => ({
-          commentsOpt: {
-            comments: data,
-            pageCount: state.commentsOpt.pageCount,
-            onPagiClick: state.commentsOpt.onPagiClick,
-          },
-        }))
-      } else
-        setConfig((state) => ({
-          commentsOpt: {
-            comments: [],
-            pageCount: state.commentsOpt.pageCount,
-            onPagiClick: state.commentsOpt.onPagiClick,
-          },
-        }))
+        setComments(() => data)
+      } else setComments(() => [])
     },
     config,
   }

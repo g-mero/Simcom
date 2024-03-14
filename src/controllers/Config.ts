@@ -1,5 +1,5 @@
 import { createContext } from 'solid-js'
-import type { PropsMain, TypeComment } from '../../type'
+import type { PropsMain, TypeComment, TypeUser, UserState } from '../type'
 
 // 获取默认初始化设置项，这里使用函数形式是为了放在对象的引用问题，导致组件复用出现干涉
 export function getDefaultConfig() {
@@ -23,7 +23,6 @@ export function getDefaultConfig() {
       },
     },
     userOpt: {
-      user: { id: '', nickname: '', role: 0, avatarUrl: '' },
       onLogin() {},
       onLogout() {},
     },
@@ -36,6 +35,10 @@ export function getDefaultConfig() {
 
 export const CommentContext = createContext({
   state: getDefaultConfig(),
+  userState: (): UserState => 'none',
+  setUser: (user: Partial<TypeUser>) => {
+    console.warn(user)
+  },
   setComments: (setFunc: (prev: TypeComment[]) => TypeComment[]) => {
     setFunc([])
   },

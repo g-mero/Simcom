@@ -20,13 +20,11 @@
       #root {
         margin-top: 10rem;
         width: 80%;
-        min-width: 600px;
       }
 
       #root-d {
         margin-top: 10rem;
         width: 80%;
-        min-width: 600px;
       }
     </style>
   </head>
@@ -85,7 +83,11 @@
         main.init({
           userOpt: {
             onLogin() {
-              main.setUser({ id: '1', nickname: 'gmero', role: 1 })
+              main.setUser({
+                email: 'gmero@qq.com',
+                nickname: 'gmero',
+                role: 1,
+              })
             },
             onLogout() {
               main.setUser()
@@ -95,7 +97,7 @@
             onDel(comment) {
               return new Promise((resolve) => {
                 setTimeout(() => {
-                  console.log('del',comment.content);
+                  console.log('del', comment.content)
                   resolve(true)
                 }, 1000)
               })
@@ -103,12 +105,12 @@
             onEdit(comment) {
               return new Promise((resolve) => {
                 setTimeout(() => {
-                  console.log('edit',comment.content);
+                  console.log('edit', comment.content)
                   resolve(true)
                 }, 1000)
               })
             },
-          }
+          },
         })
 
         main.loading.start()

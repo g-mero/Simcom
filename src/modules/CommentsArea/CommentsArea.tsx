@@ -1,8 +1,8 @@
 import { For, createEffect, createSignal, useContext } from 'solid-js'
-import Pagination from '../components/Pagination/Pagination'
-import { CommentContext } from '../Stores/Config'
-import type { PropsCommentArea, TypeComment } from '../../type'
 import OneComment from './OneComment/OneComment'
+import Pagination from '@/components/Pagination/Pagination'
+import { CommentContext } from '@/controllers/Config'
+import type { PropsCommentArea, TypeComment } from '@/type'
 
 // 整个评论展示区域
 export default function CommentsArea(props: PropsCommentArea) {

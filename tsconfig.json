@@ -18,7 +18,10 @@
     "noImplicitReturns": true,
     "skipLibCheck": true,
     // 插件
-    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    "paths": {
+      "@/*": ["./src/*"],
+    }
   },
   "include": ["src", "test"]
 }

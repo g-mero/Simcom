@@ -1,35 +1,57 @@
-/* eslint-disable solid/no-innerhtml */
-import type { Accessor, Setter } from 'solid-js'
-import { For, Show, createSignal, createUniqueId, useContext } from 'solid-js'
-import { timePast } from '../../../utils/timeUtils'
-import { CommentContext } from '../../Stores/Config'
-import ScomButton from '../../components/SCButton/ScomButton'
-import type { PropsOneComment } from '../../../type'
+import type { Setter } from 'solid-js'
+import {
+  For,
+  Show,
+  createEffect,
+  createSignal,
+  createUniqueId,
+  useContext,
+} from 'solid-js'
 import styles from './styles.module.scss'
-import Avatar from './Avatar'
 import ReplyEditor from './ReplyEditor'
+import { timePast } from '@/utils/timeUtils'
+import { CommentContext } from '@/controllers/Config'
+import ScomButton from '@/components/SCButton/ScomButton'
+import type { PropsOneComment } from '@/type'
+import Avatar from '@/components/Avatar'
 
 export default function OneReply(
   props: Omit<PropsOneComment, 'onPagiClick'> & {
     onPost: (value: string) => Promise<boolean>
-    replyID: Accessor<string>
+    replyID: string
     setReplyID: Setter<string>
   },
 ) {
   const { state: GlobalConfig } = useContext(CommentContext)
   const id = createUniqueId()
-  const isAuthed = () => GlobalConfig.userOpt.user.nickname.length > 0
+  const [rid, setRid] = createSignal(false)
+  createEffect(() => {
+    rid() && props.setReplyID('')
+    setRid(false)
+  })
+  const isAuthed = () => GlobalConfig.userOpt.user?.nickname
   const [isProcessing, setIsProcessing] = createSignal(false)
 
-  const show = () =>
-    GlobalConfig.userOpt.user.id === props.comment.userID ||
-    GlobalConfig.userOpt.user.role === 1
+  // 判断操作权限
+  const show = () => {
+    const { user } = GlobalConfig.userOpt
+
+    return (user?.id && user.id === props.comment.userID) || user?.role === 1
+  }
 
   const actions = GlobalConfig.actionsOpt
   return (
     <div class={`${styles['one-reply']} ${styles['fade-in']}`}>
-      <div class={styles['reply-main']}>
-        <Avatar avatarUrl={props.comment.avatarUrl} />
+      <div
+        style={{
+          display: 'flex',
+          flex: 1,
+        }}
+      >
+        <Avatar
+          avatarUrl={props.comment.avatarUrl}
+          style={{ 'font-size': '.8em', 'margin-right': '4px' }}
+        />
         <div style={{ flex: 1 }}>
           <div class={styles['comment-header']}>
             <div>
@@ -52,7 +74,7 @@ export default function OneReply(
             </div>
             <div
               class={`${styles.option} ${
-                props.replyID() === id ? styles.active : ''
+                props.replyID === id ? styles.active : ''
               }`}
             >
               <span class={styles['light-text']}>
@@ -64,11 +86,11 @@ export default function OneReply(
                   icon="delete"
                   onClick={() => {
                     setIsProcessing(true)
-                    GlobalConfig.actionsOpt.onDel!(props.comment).finally(
-                      () => {
+                    GlobalConfig.actionsOpt
+                      .onDel?.(props.comment)
+                      .finally(() => {
                         setIsProcessing(false)
-                      },
-                    )
+                      })
                   }}
                   text
                   disabled={isProcessing()}
@@ -78,33 +100,35 @@ export default function OneReply(
               <ScomButton
                 icon="comment"
                 onClick={() => {
-                  if (props.replyID() === id) {
+                  if (props.replyID === id) {
                     props.setReplyID('')
                     return
                   }
                   props.setReplyID(id)
                 }}
                 text
-                active={props.replyID() === id}
+                active={props.replyID === id}
                 disabled={!isAuthed()}
                 title={isAuthed() ? undefined : '请先登录'}
               />
             </div>
           </div>
           <div
-            class={styles['comment-content']}
-            innerHTML={props.comment.content}
-          />
+            style={{
+              'min-height': '2em',
+              'padding-top': '.3em',
+            }}
+          >
+            {props.comment.content}
+          </div>
         </div>
       </div>
       <ReplyEditor
-        show={props.replyID() === id}
+        show={props.replyID === id}
         placeHolder={'写下回复'}
         onPost={(value) => {
           return props.onPost(value).then((res) => {
-            if (res) {
-              props.setReplyID('')
-            }
+            res && setRid(true)
           })
         }}
       />
